@@ -1,5 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:verify/bloc/auth_bloc.dart';
+import 'package:verify/bloc/auth_event.dart';
+import 'package:verify/bloc/auth_state.dart';
+import 'package:verify/core/constants.dart';
+import 'package:verify/screens/login_screen.dart';
+import 'package:verify/widgets/profile_avatar.dart';
 
 class ProfileScreen extends StatelessWidget {
   const ProfileScreen({super.key});
@@ -101,8 +107,7 @@ class ProfileScreen extends StatelessWidget {
                         alignment: Alignment.bottomRight,
                         children: [
                           ProfileAvatar(
-                            imageUrl:
-                                '${ApiService.baseUrl}${user.profilePictureUrl}',
+                            imageUrl: '$baseUrl${user.profilePictureUrl}',
                             radius: MediaQuery.of(context).size.width * 0.15,
                           ),
                           Container(
@@ -126,29 +131,8 @@ class ProfileScreen extends StatelessWidget {
                     _buildUserInfoField(label: 'Email', value: user.email),
                     const SizedBox(height: 16),
                     _buildUserInfoField(label: 'Address', value: user.address),
-                    const SizedBox(
-                      height: 32,
-                    ), // Replace Spacer with fixed height
-                    SizedBox(
-                      width: double.infinity,
-                      child: ElevatedButton.icon(
-                        icon: const Icon(Icons.lock, color: Colors.white),
-                        label: const Text(
-                          'Change Password',
-                          style: TextStyle(color: Colors.white),
-                        ),
-                        onPressed: () =>
-                            _showChangePasswordDialog(context, user.email),
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor: const Color(0xFF3A3A50),
-                          padding: const EdgeInsets.symmetric(vertical: 16),
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(30),
-                          ),
-                        ),
-                      ),
-                    ),
-                    const SizedBox(height: 16),
+                    const SizedBox(height: 50),
+
                     SizedBox(
                       width: double.infinity,
                       child: OutlinedButton.icon(
@@ -167,7 +151,7 @@ class ProfileScreen extends StatelessWidget {
                         ),
                       ),
                     ),
-                    const SizedBox(height: 24), // Extra padding at the bottom
+                    const SizedBox(height: 24),
                   ],
                 ),
               );

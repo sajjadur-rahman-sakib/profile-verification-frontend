@@ -2,6 +2,11 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:verify/bloc/auth_bloc.dart';
+import 'package:verify/bloc/auth_event.dart';
+import 'package:verify/bloc/auth_state.dart';
+import 'package:verify/screens/login_screen.dart';
+import 'package:verify/screens/otp_screen.dart';
 
 class SignupScreen extends StatefulWidget {
   const SignupScreen({super.key});
@@ -107,7 +112,7 @@ class _SignupScreenState extends State<SignupScreen> {
                             controller: _nameController,
                             style: const TextStyle(color: Colors.white),
                             decoration: InputDecoration(
-                              hintText: 'Jaydip Chaudry',
+                              hintText: 'Name',
                               hintStyle: const TextStyle(color: Colors.white54),
                               prefixIcon: const Icon(
                                 Icons.person,
@@ -250,7 +255,7 @@ class _SignupScreenState extends State<SignupScreen> {
                                       if (_formKey.currentState!.validate() &&
                                           _profileImage != null) {
                                         context.read<AuthBloc>().add(
-                                          RegisterEvent(
+                                          SignupEvent(
                                             name: _nameController.text,
                                             email: _emailController.text,
                                             password: _passwordController.text,
@@ -312,9 +317,11 @@ class _SignupScreenState extends State<SignupScreen> {
                                 ),
                                 TextButton(
                                   onPressed: () {
-                                    Navigator.pushReplacementNamed(
+                                    Navigator.pushReplacement(
                                       context,
-                                      '/login',
+                                      MaterialPageRoute(
+                                        builder: (context) => LoginScreen(),
+                                      ),
                                     );
                                   },
                                   child: const Text(

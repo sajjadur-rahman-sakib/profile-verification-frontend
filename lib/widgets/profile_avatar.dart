@@ -36,7 +36,7 @@ class ProfileAvatar extends StatelessWidget {
         if (snapshot.hasError || !snapshot.data!) {
           return CircleAvatar(
             radius: radius,
-            child: const Icon(Icons.person, size: 40),
+            child: const Icon(Icons.person, size: 50),
           );
         }
         return CircleAvatar(

@@ -6,7 +6,7 @@ import 'package:verify/core/constants.dart';
 
 class ApiService {
   static const String apiPrefix = '/api';
-  static const String signupPath = '$apiPrefix/signup';
+  static const String registerPath = '$apiPrefix/signup';
 
   Future<Map<String, dynamic>> signup(
     String name,
@@ -18,7 +18,7 @@ class ApiService {
     try {
       var request = http.MultipartRequest(
         'POST',
-        Uri.parse('$baseUrl$signupPath'),
+        Uri.parse('$baseUrl$registerPath'),
       );
       request.fields['name'] = name;
       request.fields['email'] = email;

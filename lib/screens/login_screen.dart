@@ -1,5 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:verify/bloc/auth_bloc.dart';
+import 'package:verify/bloc/auth_event.dart';
+import 'package:verify/bloc/auth_state.dart';
+import 'package:verify/screens/profile_screen.dart';
+import 'package:verify/screens/signup_screen.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -17,11 +22,14 @@ class _LoginScreenState extends State<LoginScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color(0xFF2A2A40), // Dark purple-ish background
+      backgroundColor: const Color(0xFF2A2A40),
       body: BlocListener<AuthBloc, AuthState>(
         listener: (context, state) {
           if (state is AuthAuthenticated) {
-            Navigator.pushReplacementNamed(context, '/profile');
+            Navigator.pushReplacement(
+              context,
+              MaterialPageRoute(builder: (context) => ProfileScreen()),
+            );
           } else if (state is AuthError) {
             ScaffoldMessenger.of(
               context,
@@ -58,7 +66,7 @@ class _LoginScreenState extends State<LoginScreen> {
                       controller: _emailController,
                       style: const TextStyle(color: Colors.white),
                       decoration: InputDecoration(
-                        hintText: 'jaydippatel785@gmail.com',
+                        hintText: 'Email',
                         hintStyle: const TextStyle(color: Colors.white54),
                         prefixIcon: const Icon(
                           Icons.mail,
@@ -115,7 +123,6 @@ class _LoginScreenState extends State<LoginScreen> {
                       alignment: Alignment.centerRight,
                       child: TextButton(
                         onPressed: () {
-                          // TODO: Implement forgot password functionality
                           ScaffoldMessenger.of(context).showSnackBar(
                             const SnackBar(
                               content: Text(
@@ -167,8 +174,12 @@ class _LoginScreenState extends State<LoginScreen> {
                             style: TextStyle(color: Colors.white70),
                           ),
                           TextButton(
-                            onPressed: () =>
-                                Navigator.pushNamed(context, '/register'),
+                            onPressed: () => Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => SignupScreen(),
+                              ),
+                            ),
                             child: const Text(
                               'Signup',
                               style: TextStyle(color: Colors.white),
