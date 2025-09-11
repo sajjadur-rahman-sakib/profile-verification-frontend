@@ -1,1 +1,1 @@
-const baseUrl = 'https://sakib18.cse.pstu.ac.bd/projects/profile-verify';
+const baseUrl = 'http://10.0.2.2:8080';

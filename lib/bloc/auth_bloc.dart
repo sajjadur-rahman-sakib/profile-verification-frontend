@@ -124,5 +124,29 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
       currentUser = null;
       emit(AuthLoggedOut());
     });
+
+    on<ForgotPasswordEvent>((event, emit) async {
+      emit(AuthLoading());
+      try {
+        final response = await apiService.forgotPassword(event.email);
+        emit(AuthForgotPasswordSuccess(response['message']));
+      } catch (e) {
+        emit(AuthError(e.toString()));
+      }
+    });
+
+    on<ResetPasswordEvent>((event, emit) async {
+      emit(AuthLoading());
+      try {
+        final response = await apiService.resetPassword(
+          event.email,
+          event.otp,
+          event.newPassword,
+        );
+        emit(AuthResetPasswordSuccess(response['message']));
+      } catch (e) {
+        emit(AuthError(e.toString()));
+      }
+    });
   }
 }

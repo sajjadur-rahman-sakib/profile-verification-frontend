@@ -6,7 +6,7 @@ import 'package:verify/core/constants.dart';
 
 class ApiService {
   static const String apiPrefix = '/api';
-  static const String registerPath = '$apiPrefix/signup';
+  static const String registerPath = '$apiPrefix/user-signup';
 
   Future<Map<String, dynamic>> signup(
     String name,
@@ -134,7 +134,7 @@ class ApiService {
   Future<Map<String, dynamic>> login(String email, String password) async {
     try {
       var response = await http.post(
-        Uri.parse('$baseUrl$apiPrefix/login'),
+        Uri.parse('$baseUrl$apiPrefix/user-login'),
         headers: {'Content-Type': 'application/x-www-form-urlencoded'},
         body: {'email': email, 'password': password},
       );
@@ -211,6 +211,60 @@ class ApiService {
       return jsonResponse;
     } catch (e) {
       throw Exception('Failed to change password: $e');
+    }
+  }
+
+  Future<Map<String, dynamic>> forgotPassword(String email) async {
+    try {
+      var response = await http.post(
+        Uri.parse('$baseUrl$apiPrefix/forgot-password'),
+        headers: {'Content-Type': 'application/x-www-form-urlencoded'},
+        body: {'email': email},
+      );
+
+      if (response.statusCode != 200) {
+        throw Exception(
+          'Forgot password request failed with status ${response.statusCode}: ${response.body}',
+        );
+      }
+
+      var jsonResponse = jsonDecode(response.body);
+      if (jsonResponse is! Map<String, dynamic>) {
+        throw Exception('Invalid response format: ${response.body}');
+      }
+
+      return jsonResponse;
+    } catch (e) {
+      throw Exception('Failed to process forgot password request: $e');
+    }
+  }
+
+  Future<Map<String, dynamic>> resetPassword(
+    String email,
+    String otp,
+    String newPassword,
+  ) async {
+    try {
+      var response = await http.post(
+        Uri.parse('$baseUrl$apiPrefix/reset-password'),
+        headers: {'Content-Type': 'application/x-www-form-urlencoded'},
+        body: {'email': email, 'otp': otp, 'new_password': newPassword},
+      );
+
+      if (response.statusCode != 200) {
+        throw Exception(
+          'Password reset failed with status ${response.statusCode}: ${response.body}',
+        );
+      }
+
+      var jsonResponse = jsonDecode(response.body);
+      if (jsonResponse is! Map<String, dynamic>) {
+        throw Exception('Invalid response format: ${response.body}');
+      }
+
+      return jsonResponse;
+    } catch (e) {
+      throw Exception('Failed to reset password: $e');
     }
   }
 }

@@ -55,6 +55,18 @@ class AuthPasswordChanged extends AuthState {}
 
 class AuthLoggedOut extends AuthState {}
 
+class AuthForgotPasswordSuccess extends AuthState {
+  final String message;
+
+  AuthForgotPasswordSuccess(this.message);
+}
+
+class AuthResetPasswordSuccess extends AuthState {
+  final String message;
+
+  AuthResetPasswordSuccess(this.message);
+}
+
 class AuthError extends AuthState {
   final String message;
 

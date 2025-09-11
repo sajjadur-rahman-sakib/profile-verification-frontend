@@ -3,20 +3,19 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:verify/bloc/auth_bloc.dart';
 import 'package:verify/bloc/auth_event.dart';
 import 'package:verify/bloc/auth_state.dart';
-import 'package:verify/screens/profile_screen.dart';
-import 'package:verify/screens/signup_screen.dart';
-import 'package:verify/screens/forgot_password.dart';
 
-class LoginScreen extends StatefulWidget {
-  const LoginScreen({super.key});
+class ResetPasswordScreen extends StatefulWidget {
+  final String email;
+
+  const ResetPasswordScreen({super.key, required this.email});
 
   @override
-  State<LoginScreen> createState() => _LoginScreenState();
+  State<ResetPasswordScreen> createState() => _ResetPasswordScreenState();
 }
 
-class _LoginScreenState extends State<LoginScreen> {
+class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
   final _formKey = GlobalKey<FormState>();
-  final _emailController = TextEditingController();
+  final _otpController = TextEditingController();
   final _passwordController = TextEditingController();
   bool _obscurePassword = true;
 
@@ -24,13 +23,25 @@ class _LoginScreenState extends State<LoginScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: const Color(0xFF2A2A40),
+      appBar: AppBar(
+        backgroundColor: const Color(0xFF2A2A40),
+        elevation: 0,
+        leading: IconButton(
+          icon: const Icon(Icons.arrow_back, color: Colors.white),
+          onPressed: () => Navigator.pop(context),
+        ),
+      ),
       body: BlocListener<AuthBloc, AuthState>(
         listener: (context, state) {
-          if (state is AuthAuthenticated) {
-            Navigator.pushReplacement(
-              context,
-              MaterialPageRoute(builder: (context) => ProfileScreen()),
+          if (state is AuthResetPasswordSuccess) {
+            ScaffoldMessenger.of(context).showSnackBar(
+              const SnackBar(
+                content: Text(
+                  'Password reset successful. Please login with your new password.',
+                ),
+              ),
             );
+            Navigator.of(context).popUntil((route) => route.isFirst);
           } else if (state is AuthError) {
             ScaffoldMessenger.of(
               context,
@@ -50,7 +61,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     const Text(
-                      'Login',
+                      'Reset Password',
                       style: TextStyle(
                         color: Colors.white,
                         fontSize: 32,
@@ -59,18 +70,18 @@ class _LoginScreenState extends State<LoginScreen> {
                     ),
                     const SizedBox(height: 8),
                     const Text(
-                      'Please sign in to continue.',
+                      'Enter the OTP received in your email and your new password.',
                       style: TextStyle(color: Colors.white70, fontSize: 16),
                     ),
                     const SizedBox(height: 48),
                     TextFormField(
-                      controller: _emailController,
+                      controller: _otpController,
                       style: const TextStyle(color: Colors.white),
                       decoration: InputDecoration(
-                        hintText: 'Email',
+                        hintText: 'Enter OTP',
                         hintStyle: const TextStyle(color: Colors.white54),
                         prefixIcon: const Icon(
-                          Icons.mail,
+                          Icons.lock_clock,
                           color: Colors.white70,
                         ),
                         filled: true,
@@ -81,7 +92,7 @@ class _LoginScreenState extends State<LoginScreen> {
                         ),
                       ),
                       validator: (value) =>
-                          value!.contains('@') ? null : 'Enter valid email',
+                          value!.isEmpty ? 'OTP is required' : null,
                     ),
                     const SizedBox(height: 16),
                     TextFormField(
@@ -89,7 +100,7 @@ class _LoginScreenState extends State<LoginScreen> {
                       style: const TextStyle(color: Colors.white),
                       obscureText: _obscurePassword,
                       decoration: InputDecoration(
-                        hintText: 'Password',
+                        hintText: 'New Password',
                         hintStyle: const TextStyle(color: Colors.white54),
                         prefixIcon: const Icon(
                           Icons.lock,
@@ -119,72 +130,53 @@ class _LoginScreenState extends State<LoginScreen> {
                           ? 'Password must be at least 6 characters'
                           : null,
                     ),
-                    const SizedBox(height: 8),
-                    Align(
-                      alignment: Alignment.centerRight,
-                      child: TextButton(
-                        onPressed: () => Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => const ForgotPasswordScreen(),
-                          ),
-                        ),
-                        child: const Text(
-                          'Forgot password?',
-                          style: TextStyle(color: Colors.white70),
-                        ),
-                      ),
-                    ),
-                    const SizedBox(height: 24),
-                    SizedBox(
-                      width: double.infinity,
-                      child: ElevatedButton(
-                        onPressed: () {
-                          if (_formKey.currentState!.validate()) {
-                            context.read<AuthBloc>().add(
-                              LoginEvent(
-                                email: _emailController.text,
-                                password: _passwordController.text,
-                              ),
-                            );
-                          }
-                        },
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor: const Color(0xFF3A3A50),
-                          padding: const EdgeInsets.symmetric(vertical: 16),
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(8),
-                          ),
-                        ),
-                        child: const Text(
-                          'Login',
-                          style: TextStyle(color: Colors.white, fontSize: 16),
-                        ),
-                      ),
-                    ),
-                    const SizedBox(height: 24),
-                    Center(
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          const Text(
-                            "Don't have an account? ",
-                            style: TextStyle(color: Colors.white70),
-                          ),
-                          TextButton(
-                            onPressed: () => Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) => SignupScreen(),
+                    const SizedBox(height: 32),
+                    BlocBuilder<AuthBloc, AuthState>(
+                      builder: (context, state) {
+                        return SizedBox(
+                          width: double.infinity,
+                          child: ElevatedButton(
+                            onPressed: state is AuthLoading
+                                ? null
+                                : () {
+                                    if (_formKey.currentState!.validate()) {
+                                      context.read<AuthBloc>().add(
+                                        ResetPasswordEvent(
+                                          email: widget.email,
+                                          otp: _otpController.text,
+                                          newPassword: _passwordController.text,
+                                        ),
+                                      );
+                                    }
+                                  },
+                            style: ElevatedButton.styleFrom(
+                              backgroundColor: const Color(0xFF3A3A50),
+                              padding: const EdgeInsets.symmetric(vertical: 16),
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(8),
                               ),
                             ),
-                            child: const Text(
-                              'Signup',
-                              style: TextStyle(color: Colors.white),
-                            ),
+                            child: state is AuthLoading
+                                ? const SizedBox(
+                                    height: 20,
+                                    width: 20,
+                                    child: CircularProgressIndicator(
+                                      strokeWidth: 2,
+                                      valueColor: AlwaysStoppedAnimation<Color>(
+                                        Colors.white,
+                                      ),
+                                    ),
+                                  )
+                                : const Text(
+                                    'Reset Password',
+                                    style: TextStyle(
+                                      color: Colors.white,
+                                      fontSize: 16,
+                                    ),
+                                  ),
                           ),
-                        ],
-                      ),
+                        );
+                      },
                     ),
                   ],
                 ),
