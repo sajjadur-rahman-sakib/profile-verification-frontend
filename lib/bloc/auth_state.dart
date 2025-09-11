@@ -67,6 +67,13 @@ class AuthResetPasswordSuccess extends AuthState {
   AuthResetPasswordSuccess(this.message);
 }
 
+class AuthProfileUpdated extends AuthState {
+  final User user;
+  final String message;
+
+  AuthProfileUpdated(this.user, this.message);
+}
+
 class AuthError extends AuthState {
   final String message;
 

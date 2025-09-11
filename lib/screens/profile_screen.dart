@@ -1,5 +1,7 @@
+import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:verify/bloc/auth_bloc.dart';
 import 'package:verify/bloc/auth_event.dart';
 import 'package:verify/bloc/auth_state.dart';
@@ -7,8 +9,64 @@ import 'package:verify/core/constants.dart';
 import 'package:verify/screens/login_screen.dart';
 import 'package:verify/widgets/profile_avatar.dart';
 
-class ProfileScreen extends StatelessWidget {
+class ProfileScreen extends StatefulWidget {
   const ProfileScreen({super.key});
+
+  @override
+  State<ProfileScreen> createState() => _ProfileScreenState();
+}
+
+class _ProfileScreenState extends State<ProfileScreen> {
+  bool _isEditing = false;
+  final _nameController = TextEditingController();
+  final _addressController = TextEditingController();
+  String? _newProfilePicturePath;
+  final _imagePicker = ImagePicker();
+  bool _initialized = false;
+
+  @override
+  void dispose() {
+    _nameController.dispose();
+    _addressController.dispose();
+    super.dispose();
+  }
+
+  Future<void> _pickImage() async {
+    final pickedFile = await _imagePicker.pickImage(
+      source: ImageSource.gallery,
+    );
+    if (pickedFile != null) {
+      setState(() {
+        _newProfilePicturePath = pickedFile.path;
+      });
+    }
+  }
+
+  void _toggleEditMode(AuthBloc authBloc) {
+    if (_isEditing) {
+      // Save changes
+      if (_nameController.text.isNotEmpty ||
+          _addressController.text.isNotEmpty ||
+          _newProfilePicturePath != null) {
+        authBloc.add(
+          UpdateProfileEvent(
+            email: authBloc.currentUser!.email,
+            name: _nameController.text.isNotEmpty ? _nameController.text : null,
+            address: _addressController.text.isNotEmpty
+                ? _addressController.text
+                : null,
+            profilePicturePath: _newProfilePicturePath,
+          ),
+        );
+      }
+    } else {
+      // Enter edit mode
+      _newProfilePicturePath = null;
+    }
+    setState(() {
+      _isEditing = !_isEditing;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -26,6 +84,12 @@ class ProfileScreen extends StatelessWidget {
             ScaffoldMessenger.of(context).showSnackBar(
               const SnackBar(content: Text('Password changed successfully')),
             );
+          } else if (state is AuthProfileUpdated) {
+            _nameController.text = state.user.name;
+            _addressController.text = state.user.address;
+            ScaffoldMessenger.of(
+              context,
+            ).showSnackBar(SnackBar(content: Text(state.message)));
           } else if (state is AuthError) {
             ScaffoldMessenger.of(
               context,
@@ -51,6 +115,12 @@ class ProfileScreen extends StatelessWidget {
                 );
               }
 
+              if (!_initialized) {
+                _nameController.text = user.name;
+                _addressController.text = user.address;
+                _initialized = true;
+              }
+
               return SingleChildScrollView(
                 padding: EdgeInsets.symmetric(
                   horizontal: MediaQuery.of(context).size.width * 0.05,
@@ -67,36 +137,63 @@ class ProfileScreen extends StatelessWidget {
                             Icons.arrow_back,
                             color: Colors.white,
                           ),
-                          onPressed: () => Navigator.pop(context),
-                        ),
-                        PopupMenuButton<String>(
-                          color: const Color(0xFF3A3A50),
-                          icon: const Icon(
-                            Icons.more_vert,
-                            color: Colors.white,
+                          onPressed: () => Navigator.pushAndRemoveUntil(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => const LoginScreen(),
+                            ),
+                            (route) => false,
                           ),
-                          onSelected: (value) {
-                            if (value == 'change_password') {
-                              _showChangePasswordDialog(context, user.email);
-                            } else if (value == 'delete_account') {
-                              _showDeleteAccountDialog(context, user.email);
-                            }
-                          },
-                          itemBuilder: (context) => [
-                            const PopupMenuItem(
-                              value: 'change_password',
+                        ),
+                        Row(
+                          children: [
+                            TextButton(
+                              onPressed: () => _toggleEditMode(authBloc),
                               child: Text(
-                                'Change Password',
-                                style: TextStyle(color: Colors.white),
+                                _isEditing ? 'Done' : 'Edit',
+                                style: const TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 16,
+                                ),
                               ),
                             ),
-                            const PopupMenuItem(
-                              value: 'delete_account',
-                              child: Text(
-                                'Delete Account',
-                                style: TextStyle(color: Colors.white),
+                            if (!_isEditing)
+                              PopupMenuButton<String>(
+                                color: const Color(0xFF3A3A50),
+                                icon: const Icon(
+                                  Icons.more_vert,
+                                  color: Colors.white,
+                                ),
+                                onSelected: (value) {
+                                  if (value == 'change_password') {
+                                    _showChangePasswordDialog(
+                                      context,
+                                      user.email,
+                                    );
+                                  } else if (value == 'delete_account') {
+                                    _showDeleteAccountDialog(
+                                      context,
+                                      user.email,
+                                    );
+                                  }
+                                },
+                                itemBuilder: (context) => [
+                                  const PopupMenuItem(
+                                    value: 'change_password',
+                                    child: Text(
+                                      'Change Password',
+                                      style: TextStyle(color: Colors.white),
+                                    ),
+                                  ),
+                                  const PopupMenuItem(
+                                    value: 'delete_account',
+                                    child: Text(
+                                      'Delete Account',
+                                      style: TextStyle(color: Colors.white),
+                                    ),
+                                  ),
+                                ],
                               ),
-                            ),
                           ],
                         ),
                       ],
@@ -106,31 +203,58 @@ class ProfileScreen extends StatelessWidget {
                       child: Stack(
                         alignment: Alignment.bottomRight,
                         children: [
-                          ProfileAvatar(
-                            imageUrl: '$baseUrl${user.profilePictureUrl}',
-                            radius: MediaQuery.of(context).size.width * 0.15,
-                          ),
-                          Container(
-                            padding: const EdgeInsets.all(4),
-                            decoration: BoxDecoration(
-                              color: Colors.black.withOpacity(0.5),
-                              shape: BoxShape.circle,
+                          _newProfilePicturePath != null
+                              ? CircleAvatar(
+                                  radius:
+                                      MediaQuery.of(context).size.width * 0.15,
+                                  backgroundImage: FileImage(
+                                    File(_newProfilePicturePath!),
+                                  ),
+                                )
+                              : ProfileAvatar(
+                                  imageUrl: '$baseUrl${user.profilePictureUrl}',
+                                  radius:
+                                      MediaQuery.of(context).size.width * 0.15,
+                                ),
+                          if (_isEditing)
+                            GestureDetector(
+                              onTap: _pickImage,
+                              child: Container(
+                                padding: const EdgeInsets.all(8),
+                                decoration: BoxDecoration(
+                                  color: Colors.black.withOpacity(0.5),
+                                  shape: BoxShape.circle,
+                                ),
+                                child: const Icon(
+                                  Icons.camera_alt,
+                                  color: Colors.white,
+                                  size: 24,
+                                ),
+                              ),
                             ),
-                            child: const Icon(
-                              Icons.edit,
-                              color: Colors.white,
-                              size: 20,
-                            ),
-                          ),
                         ],
                       ),
                     ),
                     const SizedBox(height: 32),
-                    _buildUserInfoField(label: 'Name', value: user.name),
+                    _buildUserInfoField(
+                      label: 'Name',
+                      value: user.name,
+                      controller: _nameController,
+                      isEditing: _isEditing,
+                    ),
                     const SizedBox(height: 16),
-                    _buildUserInfoField(label: 'Email', value: user.email),
+                    _buildUserInfoField(
+                      label: 'Email',
+                      value: user.email,
+                      enabled: false,
+                    ),
                     const SizedBox(height: 16),
-                    _buildUserInfoField(label: 'Address', value: user.address),
+                    _buildUserInfoField(
+                      label: 'Address',
+                      value: user.address,
+                      controller: _addressController,
+                      isEditing: _isEditing,
+                    ),
                     const SizedBox(height: 50),
 
                     SizedBox(
@@ -162,7 +286,13 @@ class ProfileScreen extends StatelessWidget {
     );
   }
 
-  Widget _buildUserInfoField({required String label, required String value}) {
+  Widget _buildUserInfoField({
+    required String label,
+    required String value,
+    TextEditingController? controller,
+    bool isEditing = false,
+    bool enabled = true,
+  }) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -175,8 +305,9 @@ class ProfileScreen extends StatelessWidget {
           height: 60,
           width: double.infinity,
           child: TextFormField(
-            initialValue: value,
-            enabled: false,
+            controller: controller,
+            initialValue: controller == null ? value : null,
+            enabled: enabled && isEditing,
             style: const TextStyle(color: Colors.white, fontSize: 16),
             decoration: InputDecoration(
               filled: true,

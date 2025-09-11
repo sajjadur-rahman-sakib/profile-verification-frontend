@@ -148,5 +148,32 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
         emit(AuthError(e.toString()));
       }
     });
+
+    on<UpdateProfileEvent>((event, emit) async {
+      emit(AuthLoading());
+      try {
+        final response = await apiService.updateProfile(
+          event.email,
+          name: event.name,
+          address: event.address,
+          profilePicture: event.profilePicturePath != null
+              ? File(event.profilePicturePath!)
+              : null,
+        );
+
+        currentUser = User(
+          name: response['name'] as String,
+          email: response['email'] as String,
+          address: response['address'] as String,
+          profilePictureUrl: response['profile_picture'] is String
+              ? response['profile_picture'] as String
+              : '',
+        );
+
+        emit(AuthProfileUpdated(currentUser!, response['message']));
+      } catch (e) {
+        emit(AuthError(e.toString()));
+      }
+    });
   }
 }

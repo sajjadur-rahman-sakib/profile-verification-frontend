@@ -267,4 +267,50 @@ class ApiService {
       throw Exception('Failed to reset password: $e');
     }
   }
+
+  Future<Map<String, dynamic>> updateProfile(
+    String email, {
+    String? name,
+    String? address,
+    File? profilePicture,
+  }) async {
+    try {
+      var request = http.MultipartRequest(
+        'POST',
+        Uri.parse('$baseUrl$apiPrefix/update-profile'),
+      );
+
+      request.fields['email'] = email;
+      if (name != null) request.fields['name'] = name;
+      if (address != null) request.fields['address'] = address;
+
+      if (profilePicture != null) {
+        request.files.add(
+          await http.MultipartFile.fromPath(
+            'profile_picture',
+            profilePicture.path,
+            filename: path.basename(profilePicture.path),
+          ),
+        );
+      }
+
+      var response = await request.send();
+      var responseBody = await response.stream.bytesToString();
+
+      if (response.statusCode != 200) {
+        throw Exception(
+          'Profile update failed with status ${response.statusCode}: $responseBody',
+        );
+      }
+
+      var jsonResponse = jsonDecode(responseBody);
+      if (jsonResponse is! Map<String, dynamic>) {
+        throw Exception('Invalid response format: $responseBody');
+      }
+
+      return jsonResponse;
+    } catch (e) {
+      throw Exception('Failed to update profile: $e');
+    }
+  }
 }

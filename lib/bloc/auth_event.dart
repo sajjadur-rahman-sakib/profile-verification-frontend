@@ -81,3 +81,17 @@ class ResetPasswordEvent extends AuthEvent {
     required this.newPassword,
   });
 }
+
+class UpdateProfileEvent extends AuthEvent {
+  final String email;
+  final String? name;
+  final String? address;
+  final String? profilePicturePath;
+
+  UpdateProfileEvent({
+    required this.email,
+    this.name,
+    this.address,
+    this.profilePicturePath,
+  });
+}
