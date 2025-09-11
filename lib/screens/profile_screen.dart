@@ -44,7 +44,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
 
   void _toggleEditMode(AuthBloc authBloc) {
     if (_isEditing) {
-      // Save changes
       if (_nameController.text.isNotEmpty ||
           _addressController.text.isNotEmpty ||
           _newProfilePicturePath != null) {
@@ -60,7 +59,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
         );
       }
     } else {
-      // Enter edit mode
       _newProfilePicturePath = null;
     }
     setState(() {
@@ -87,9 +85,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
           } else if (state is AuthProfileUpdated) {
             _nameController.text = state.user.name;
             _addressController.text = state.user.address;
-            ScaffoldMessenger.of(
-              context,
-            ).showSnackBar(SnackBar(content: Text(state.message)));
+            ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(content: Text('Profile updated successfully')),
+            );
           } else if (state is AuthError) {
             ScaffoldMessenger.of(
               context,
@@ -212,7 +210,12 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                   ),
                                 )
                               : ProfileAvatar(
-                                  imageUrl: '$baseUrl${user.profilePictureUrl}',
+                                  imageUrl: () {
+                                    final url =
+                                        '$baseUrl/${user.profilePictureUrl.trim()}';
+
+                                    return url;
+                                  }(),
                                   radius:
                                       MediaQuery.of(context).size.width * 0.15,
                                 ),

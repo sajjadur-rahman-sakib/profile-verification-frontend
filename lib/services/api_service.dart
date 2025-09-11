@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'dart:io';
+import 'package:flutter/widgets.dart';
 import 'package:http/http.dart' as http;
 import 'package:path/path.dart' as path;
 import 'package:verify/core/constants.dart';
@@ -268,6 +269,31 @@ class ApiService {
     }
   }
 
+  Future<Map<String, dynamic>> getUserProfile(String email) async {
+    try {
+      var response = await http.post(
+        Uri.parse('$baseUrl$apiPrefix/get-profile'),
+        headers: {'Content-Type': 'application/x-www-form-urlencoded'},
+        body: {'email': email},
+      );
+
+      if (response.statusCode != 200) {
+        throw Exception(
+          'Get profile failed with status ${response.statusCode}: ${response.body}',
+        );
+      }
+
+      var jsonResponse = jsonDecode(response.body);
+      if (jsonResponse is! Map<String, dynamic>) {
+        throw Exception('Invalid response format: ${response.body}');
+      }
+
+      return jsonResponse;
+    } catch (e) {
+      throw Exception('Failed to get profile: $e');
+    }
+  }
+
   Future<Map<String, dynamic>> updateProfile(
     String email, {
     String? name,
@@ -308,7 +334,15 @@ class ApiService {
         throw Exception('Invalid response format: $responseBody');
       }
 
-      return jsonResponse;
+      try {
+        return await getUserProfile(email);
+      } catch (e) {
+        return {
+          ...jsonResponse,
+          'profile_picture': jsonResponse['profile_picture'] ?? '',
+          'message': 'Profile updated successfully',
+        };
+      }
     } catch (e) {
       throw Exception('Failed to update profile: $e');
     }

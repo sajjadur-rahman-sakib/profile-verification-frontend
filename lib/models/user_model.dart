@@ -12,11 +12,15 @@ class User {
   });
 
   factory User.fromJson(Map<String, dynamic> json) {
+    String profilePicture = json['profile_picture'] ?? '';
+
+    profilePicture = profilePicture.replaceAll('\\', '/');
+
     return User(
       name: json['name'] ?? '',
       email: json['email'] ?? '',
       address: json['address'] ?? '',
-      profilePictureUrl: json['profile_picture'] ?? '',
+      profilePictureUrl: profilePicture,
     );
   }
 }

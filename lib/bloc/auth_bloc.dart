@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:verify/models/user_model.dart';
 import '../services/api_service.dart';
@@ -167,7 +168,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
           address: response['address'] as String,
           profilePictureUrl: response['profile_picture'] is String
               ? response['profile_picture'] as String
-              : '',
+              : currentUser?.profilePictureUrl ?? '',
         );
 
         emit(AuthProfileUpdated(currentUser!, response['message']));
