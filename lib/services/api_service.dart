@@ -1,6 +1,5 @@
 import 'dart:convert';
 import 'dart:io';
-import 'package:flutter/widgets.dart';
 import 'package:http/http.dart' as http;
 import 'package:path/path.dart' as path;
 import 'package:verify/core/constants.dart';
@@ -50,6 +49,31 @@ class ApiService {
       return jsonResponse;
     } catch (e) {
       throw Exception('Failed to register: $e');
+    }
+  }
+
+  Future<Map<String, dynamic>> resendOtp(String email) async {
+    try {
+      var response = await http.post(
+        Uri.parse('$baseUrl$apiPrefix/resend-otp'),
+        headers: {'Content-Type': 'application/x-www-form-urlencoded'},
+        body: {'email': email},
+      );
+
+      if (response.statusCode != 200) {
+        throw Exception(
+          'Resend OTP failed with status ${response.statusCode}: ${response.body}',
+        );
+      }
+
+      var jsonResponse = jsonDecode(response.body);
+      if (jsonResponse is! Map<String, dynamic>) {
+        throw Exception('Invalid response format: ${response.body}');
+      }
+
+      return jsonResponse;
+    } catch (e) {
+      throw Exception('Failed to resend OTP: $e');
     }
   }
 

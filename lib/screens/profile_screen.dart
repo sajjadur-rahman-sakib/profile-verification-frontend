@@ -225,6 +225,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                               child: Container(
                                 padding: const EdgeInsets.all(8),
                                 decoration: BoxDecoration(
+                                  // ignore: deprecated_member_use
                                   color: Colors.black.withOpacity(0.5),
                                   shape: BoxShape.circle,
                                 ),

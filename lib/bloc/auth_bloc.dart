@@ -1,5 +1,4 @@
 import 'dart:io';
-import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:verify/models/user_model.dart';
 import '../services/api_service.dart';
@@ -22,6 +21,16 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
           File(event.profileImagePath),
         );
 
+        emit(AuthOtpSent(response['message']));
+      } catch (e) {
+        emit(AuthError(e.toString()));
+      }
+    });
+
+    on<ResendOtpEvent>((event, emit) async {
+      emit(AuthLoading());
+      try {
+        final response = await apiService.resendOtp(event.email);
         emit(AuthOtpSent(response['message']));
       } catch (e) {
         emit(AuthError(e.toString()));

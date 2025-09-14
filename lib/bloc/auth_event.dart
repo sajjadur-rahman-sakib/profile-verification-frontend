@@ -16,6 +16,12 @@ class SignupEvent extends AuthEvent {
   });
 }
 
+class ResendOtpEvent extends AuthEvent {
+  final String email;
+
+  ResendOtpEvent({required this.email});
+}
+
 class VerifyOtpEvent extends AuthEvent {
   final String email;
   final String otp;

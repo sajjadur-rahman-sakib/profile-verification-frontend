@@ -67,6 +67,10 @@ class _OtpScreenState extends State<OtpScreen> {
                 builder: (context) => DocumentCapture(email: widget.email),
               ),
             );
+          } else if (state is AuthOtpSent) {
+            ScaffoldMessenger.of(
+              context,
+            ).showSnackBar(SnackBar(content: Text(state.message)));
           } else if (state is AuthError) {
             ScaffoldMessenger.of(
               context,
@@ -156,10 +160,8 @@ class _OtpScreenState extends State<OtpScreen> {
                     ),
                     GestureDetector(
                       onTap: () {
-                        ScaffoldMessenger.of(context).showSnackBar(
-                          const SnackBar(
-                            content: Text('OTP resent to your email'),
-                          ),
+                        context.read<AuthBloc>().add(
+                          ResendOtpEvent(email: widget.email),
                         );
                       },
                       child: const Text(
