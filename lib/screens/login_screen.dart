@@ -7,6 +7,7 @@ import 'package:verify/screens/home_screen.dart';
 import 'package:verify/screens/profile_screen.dart';
 import 'package:verify/screens/signup_screen.dart';
 import 'package:verify/screens/forgot_password.dart';
+import 'package:verify/utils/app_colors.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -24,7 +25,7 @@ class _LoginScreenState extends State<LoginScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color(0xFF2A2A40),
+      backgroundColor: AppColors.secondaryColor,
       body: BlocListener<AuthBloc, AuthState>(
         listener: (context, state) {
           if (state is AuthAuthenticated) {
@@ -51,7 +52,10 @@ class _LoginScreenState extends State<LoginScreen> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     IconButton(
-                      icon: const Icon(Icons.arrow_back, color: Colors.white),
+                      icon: const Icon(
+                        Icons.arrow_back,
+                        color: AppColors.iconColor,
+                      ),
                       onPressed: () => Navigator.pushAndRemoveUntil(
                         context,
                         MaterialPageRoute(
@@ -60,142 +64,160 @@ class _LoginScreenState extends State<LoginScreen> {
                         (route) => false,
                       ),
                     ),
-                    const Text(
-                      'Login',
-                      style: TextStyle(
-                        color: Colors.white,
-                        fontSize: 32,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                    const SizedBox(height: 8),
-                    const Text(
-                      'Please sign in to continue.',
-                      style: TextStyle(color: Colors.white70, fontSize: 16),
-                    ),
-                    const SizedBox(height: 48),
-                    TextFormField(
-                      controller: _emailController,
-                      style: const TextStyle(color: Colors.white),
-                      decoration: InputDecoration(
-                        hintText: 'Email',
-                        hintStyle: const TextStyle(color: Colors.white54),
-                        prefixIcon: const Icon(
-                          Icons.mail,
-                          color: Colors.white70,
-                        ),
-                        filled: true,
-                        fillColor: const Color(0xFF3A3A50),
-                        border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(8),
-                          borderSide: BorderSide.none,
-                        ),
-                      ),
-                      validator: (value) =>
-                          value!.contains('@') ? null : 'Enter valid email',
-                    ),
-                    const SizedBox(height: 16),
-                    TextFormField(
-                      controller: _passwordController,
-                      style: const TextStyle(color: Colors.white),
-                      obscureText: _obscurePassword,
-                      decoration: InputDecoration(
-                        hintText: 'Password',
-                        hintStyle: const TextStyle(color: Colors.white54),
-                        prefixIcon: const Icon(
-                          Icons.lock,
-                          color: Colors.white70,
-                        ),
-                        suffixIcon: IconButton(
-                          icon: Icon(
-                            _obscurePassword
-                                ? Icons.visibility_off
-                                : Icons.visibility,
-                            color: Colors.white70,
-                          ),
-                          onPressed: () {
-                            setState(() {
-                              _obscurePassword = !_obscurePassword;
-                            });
-                          },
-                        ),
-                        filled: true,
-                        fillColor: const Color(0xFF3A3A50),
-                        border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(8),
-                          borderSide: BorderSide.none,
-                        ),
-                      ),
-                      validator: (value) => value!.length < 6
-                          ? 'Password must be at least 6 characters'
-                          : null,
-                    ),
-                    const SizedBox(height: 8),
-                    Align(
-                      alignment: Alignment.centerRight,
-                      child: TextButton(
-                        onPressed: () => Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => const ForgotPasswordScreen(),
-                          ),
-                        ),
-                        child: const Text(
-                          'Forgot password?',
-                          style: TextStyle(color: Colors.white70),
-                        ),
-                      ),
-                    ),
-                    const SizedBox(height: 24),
-                    SizedBox(
-                      width: double.infinity,
-                      child: ElevatedButton(
-                        onPressed: () {
-                          if (_formKey.currentState!.validate()) {
-                            context.read<AuthBloc>().add(
-                              LoginEvent(
-                                email: _emailController.text,
-                                password: _passwordController.text,
-                              ),
-                            );
-                          }
-                        },
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor: const Color(0xFF3A3A50),
-                          padding: const EdgeInsets.symmetric(vertical: 16),
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(8),
-                          ),
-                        ),
-                        child: const Text(
+                    Column(
+                      children: [
+                        const Text(
                           'Login',
-                          style: TextStyle(color: Colors.white, fontSize: 16),
-                        ),
-                      ),
-                    ),
-                    const SizedBox(height: 24),
-                    Center(
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          const Text(
-                            "Don't have an account? ",
-                            style: TextStyle(color: Colors.white70),
+                          style: TextStyle(
+                            color: AppColors.primaryColor,
+                            fontSize: 40,
+                            fontWeight: FontWeight.bold,
                           ),
-                          TextButton(
+                        ),
+                        const SizedBox(height: 8),
+                        const Text(
+                          'Please sign in to continue.',
+                          style: TextStyle(
+                            color: AppColors.textColor,
+                            fontSize: 16,
+                          ),
+                        ),
+                        const SizedBox(height: 60),
+                        TextFormField(
+                          controller: _emailController,
+                          style: const TextStyle(color: AppColors.textColor),
+                          decoration: InputDecoration(
+                            hintText: 'Email',
+                            hintStyle: const TextStyle(
+                              color: AppColors.textColor,
+                            ),
+                            prefixIcon: const Icon(
+                              Icons.mail,
+                              color: AppColors.iconColor,
+                            ),
+                            filled: true,
+                            fillColor: AppColors.fieldColor,
+                            border: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(8),
+                              borderSide: BorderSide.none,
+                            ),
+                          ),
+                          validator: (value) =>
+                              value!.contains('@') ? null : 'Enter valid email',
+                        ),
+                        const SizedBox(height: 24),
+                        TextFormField(
+                          controller: _passwordController,
+                          style: const TextStyle(color: AppColors.textColor),
+                          obscureText: _obscurePassword,
+                          decoration: InputDecoration(
+                            hintText: 'Password',
+                            hintStyle: const TextStyle(
+                              color: AppColors.textColor,
+                            ),
+                            prefixIcon: const Icon(
+                              Icons.lock,
+                              color: AppColors.iconColor,
+                            ),
+                            suffixIcon: IconButton(
+                              icon: Icon(
+                                _obscurePassword
+                                    ? Icons.visibility_off
+                                    : Icons.visibility,
+                                color: AppColors.iconColor,
+                              ),
+                              onPressed: () {
+                                setState(() {
+                                  _obscurePassword = !_obscurePassword;
+                                });
+                              },
+                            ),
+                            filled: true,
+                            fillColor: AppColors.fieldColor,
+                            border: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(8),
+                              borderSide: BorderSide.none,
+                            ),
+                          ),
+                          validator: (value) => value!.length < 6
+                              ? 'Password must be at least 6 characters'
+                              : null,
+                        ),
+                        const SizedBox(height: 16),
+                        Align(
+                          alignment: Alignment.centerRight,
+                          child: TextButton(
                             onPressed: () => Navigator.push(
                               context,
                               MaterialPageRoute(
-                                builder: (context) => SignupScreen(),
+                                builder: (context) =>
+                                    const ForgotPasswordScreen(),
                               ),
                             ),
                             child: const Text(
-                              'Signup',
-                              style: TextStyle(color: Colors.white),
+                              'Forgot password?',
+                              style: TextStyle(color: AppColors.textColor),
                             ),
                           ),
-                        ],
-                      ),
+                        ),
+                        const SizedBox(height: 24),
+                        SizedBox(
+                          width: double.infinity,
+                          child: ElevatedButton(
+                            onPressed: () {
+                              if (_formKey.currentState!.validate()) {
+                                context.read<AuthBloc>().add(
+                                  LoginEvent(
+                                    email: _emailController.text,
+                                    password: _passwordController.text,
+                                  ),
+                                );
+                              }
+                            },
+                            style: ElevatedButton.styleFrom(
+                              backgroundColor: AppColors.primaryColor,
+                              padding: const EdgeInsets.symmetric(vertical: 16),
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(8),
+                              ),
+                            ),
+                            child: const Text(
+                              'Login',
+                              style: TextStyle(
+                                color: AppColors.textColor,
+                                fontSize: 16,
+                              ),
+                            ),
+                          ),
+                        ),
+                        const SizedBox(height: 24),
+                        Center(
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              const Text(
+                                "Don't have an account? ",
+                                style: TextStyle(color: AppColors.textColor),
+                              ),
+                              TextButton(
+                                onPressed: () => Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) => SignupScreen(),
+                                  ),
+                                ),
+                                child: Text(
+                                  'Signup',
+                                  style: TextStyle(
+                                    color: AppColors.blackColor,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ],
                     ),
                   ],
                 ),

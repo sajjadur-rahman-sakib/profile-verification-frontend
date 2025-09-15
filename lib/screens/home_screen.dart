@@ -2,6 +2,7 @@ import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:verify/screens/signup_screen.dart';
+import 'package:verify/utils/app_colors.dart';
 import 'package:verify/widgets/button_card.dart';
 import 'package:verify/screens/login_screen.dart';
 import 'package:verify/screens/profile_screen.dart';
@@ -31,7 +32,7 @@ class _HomeScreenState extends State<HomeScreen> {
     final theme = Theme.of(context);
 
     return Scaffold(
-      backgroundColor: const Color(0xFFF5F5F5),
+      backgroundColor: AppColors.secondaryColor,
       body: SafeArea(
         child: Column(
           children: [
@@ -47,7 +48,7 @@ class _HomeScreenState extends State<HomeScreen> {
                         Text(
                           'VERIFY',
                           style: theme.textTheme.titleLarge?.copyWith(
-                            color: const Color.fromARGB(255, 154, 196, 208),
+                            color: AppColors.primaryColor,
                             fontWeight: FontWeight.bold,
                             fontSize: 32,
                           ),
@@ -56,7 +57,7 @@ class _HomeScreenState extends State<HomeScreen> {
                         Text(
                           'Used to verify user profile.',
                           style: theme.textTheme.bodySmall?.copyWith(
-                            color: Colors.black54,
+                            color: AppColors.textColor,
                           ),
                         ),
                       ],
@@ -74,12 +75,12 @@ class _HomeScreenState extends State<HomeScreen> {
                 children: [
                   Container(
                     decoration: BoxDecoration(
-                      color: Colors.white,
+                      color: AppColors.whiteColor,
                       borderRadius: BorderRadius.circular(8),
                       boxShadow: [
                         BoxShadow(
                           // ignore: deprecated_member_use
-                          color: Colors.black.withOpacity(0.05),
+                          color: AppColors.blackColor.withOpacity(0.05),
                           blurRadius: 6,
                           offset: const Offset(0, 3),
                         ),
@@ -118,11 +119,11 @@ class _HomeScreenState extends State<HomeScreen> {
                                     errorBuilder:
                                         (context, error, stackTrace) =>
                                             Container(
-                                              color: Colors.grey[200],
+                                              color: AppColors.iconColor,
                                               child: const Center(
                                                 child: Icon(
                                                   Icons.broken_image,
-                                                  color: Colors.black26,
+                                                  color: AppColors.blackColor,
                                                 ),
                                               ),
                                             ),
@@ -150,6 +151,8 @@ class _HomeScreenState extends State<HomeScreen> {
                           ),
                         ),
 
+                        const SizedBox(height: 8),
+
                         Row(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: demoImages.asMap().entries.map((entry) {
@@ -162,8 +165,8 @@ class _HomeScreenState extends State<HomeScreen> {
                               decoration: BoxDecoration(
                                 shape: BoxShape.circle,
                                 color: _currentIndex == entry.key
-                                    ? const Color.fromARGB(255, 154, 196, 208)
-                                    : Colors.black26,
+                                    ? AppColors.primaryColor
+                                    : AppColors.iconColor,
                               ),
                             );
                           }).toList(),
@@ -275,8 +278,8 @@ class _HomeScreenState extends State<HomeScreen> {
           });
         },
         type: BottomNavigationBarType.fixed,
-        selectedItemColor: const Color.fromARGB(255, 154, 196, 208),
-        unselectedItemColor: Colors.black45,
+        selectedItemColor: AppColors.primaryColor,
+        unselectedItemColor: AppColors.iconColor,
         items: [
           BottomNavigationBarItem(
             icon: GestureDetector(

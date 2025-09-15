@@ -5,9 +5,10 @@ import 'package:image_picker/image_picker.dart';
 import 'package:verify/bloc/auth_bloc.dart';
 import 'package:verify/bloc/auth_event.dart';
 import 'package:verify/bloc/auth_state.dart';
-import 'package:verify/core/constants.dart';
+import 'package:verify/core/app_constants.dart';
 import 'package:verify/screens/home_screen.dart';
 import 'package:verify/screens/login_screen.dart';
+import 'package:verify/utils/app_colors.dart';
 import 'package:verify/widgets/profile_avatar.dart';
 
 class ProfileScreen extends StatefulWidget {
@@ -70,7 +71,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color(0xFF2A2A40),
+      backgroundColor: AppColors.secondaryColor,
       body: BlocListener<AuthBloc, AuthState>(
         listener: (context, state) {
           if (state is AuthAccountDeleted || state is AuthLoggedOut) {
@@ -109,7 +110,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 return const Center(
                   child: Text(
                     'No user data available',
-                    style: TextStyle(color: Colors.white),
+                    style: TextStyle(color: AppColors.textColor),
                   ),
                 );
               }
@@ -134,7 +135,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                         IconButton(
                           icon: const Icon(
                             Icons.arrow_back,
-                            color: Colors.white,
+                            color: AppColors.iconColor,
                           ),
                           onPressed: () => Navigator.pushAndRemoveUntil(
                             context,
@@ -151,17 +152,17 @@ class _ProfileScreenState extends State<ProfileScreen> {
                               child: Text(
                                 _isEditing ? 'Done' : 'Edit',
                                 style: const TextStyle(
-                                  color: Colors.white,
+                                  color: AppColors.textColor,
                                   fontSize: 16,
                                 ),
                               ),
                             ),
                             if (!_isEditing)
                               PopupMenuButton<String>(
-                                color: const Color(0xFF3A3A50),
+                                color: AppColors.secondaryColor,
                                 icon: const Icon(
                                   Icons.more_vert,
-                                  color: Colors.white,
+                                  color: AppColors.iconColor,
                                 ),
                                 onSelected: (value) {
                                   if (value == 'change_password') {
@@ -181,14 +182,18 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                     value: 'change_password',
                                     child: Text(
                                       'Change Password',
-                                      style: TextStyle(color: Colors.white),
+                                      style: TextStyle(
+                                        color: AppColors.textColor,
+                                      ),
                                     ),
                                   ),
                                   const PopupMenuItem(
                                     value: 'delete_account',
                                     child: Text(
                                       'Delete Account',
-                                      style: TextStyle(color: Colors.white),
+                                      style: TextStyle(
+                                        color: AppColors.textColor,
+                                      ),
                                     ),
                                   ),
                                 ],
@@ -227,12 +232,12 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                 padding: const EdgeInsets.all(8),
                                 decoration: BoxDecoration(
                                   // ignore: deprecated_member_use
-                                  color: Colors.black.withOpacity(0.5),
+                                  color: AppColors.blackColor.withOpacity(0.5),
                                   shape: BoxShape.circle,
                                 ),
                                 child: const Icon(
                                   Icons.camera_alt,
-                                  color: Colors.white,
+                                  color: AppColors.primaryColor,
                                   size: 24,
                                 ),
                               ),
@@ -265,14 +270,18 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     SizedBox(
                       width: double.infinity,
                       child: OutlinedButton.icon(
-                        icon: const Icon(Icons.logout, color: Colors.white),
+                        icon: const Icon(
+                          Icons.logout,
+                          color: AppColors.iconColor,
+                        ),
                         label: const Text(
                           'Logout',
-                          style: TextStyle(color: Colors.white),
+                          style: TextStyle(color: AppColors.textColor),
                         ),
                         onPressed: () => _showLogoutDialog(context),
                         style: OutlinedButton.styleFrom(
-                          side: const BorderSide(color: Colors.white),
+                          backgroundColor: AppColors.primaryColor,
+                          side: const BorderSide(color: AppColors.primaryColor),
                           padding: const EdgeInsets.symmetric(vertical: 16),
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(30),
@@ -303,7 +312,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
       children: [
         Text(
           label,
-          style: const TextStyle(color: Colors.white70, fontSize: 14),
+          style: const TextStyle(color: AppColors.blackColor, fontSize: 15),
         ),
         const SizedBox(height: 8),
         SizedBox(
@@ -313,10 +322,10 @@ class _ProfileScreenState extends State<ProfileScreen> {
             controller: controller,
             initialValue: controller == null ? value : null,
             enabled: enabled && isEditing,
-            style: const TextStyle(color: Colors.white, fontSize: 16),
+            style: const TextStyle(color: AppColors.textColor, fontSize: 16),
             decoration: InputDecoration(
               filled: true,
-              fillColor: const Color(0xFF3A3A50),
+              fillColor: AppColors.fieldColor,
               border: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(8),
                 borderSide: BorderSide.none,
@@ -338,27 +347,27 @@ class _ProfileScreenState extends State<ProfileScreen> {
       context: context,
       builder: (context) {
         return AlertDialog(
-          backgroundColor: const Color(0xFF3A3A50),
+          backgroundColor: AppColors.secondaryColor,
           title: const Text(
             'Delete Account',
-            style: TextStyle(color: Colors.white),
+            style: TextStyle(color: AppColors.primaryColor),
           ),
           content: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
               const Text(
                 'Enter your email to confirm account deletion:',
-                style: TextStyle(color: Colors.white70),
+                style: TextStyle(color: AppColors.textColor),
               ),
               const SizedBox(height: 16),
               TextField(
                 controller: emailController,
-                style: const TextStyle(color: Colors.white),
+                style: const TextStyle(color: AppColors.textColor),
                 decoration: InputDecoration(
                   labelText: 'Email',
-                  labelStyle: const TextStyle(color: Colors.white70),
+                  labelStyle: const TextStyle(color: AppColors.textColor),
                   filled: true,
-                  fillColor: const Color(0xFF2A2A40),
+                  fillColor: AppColors.fieldColor,
                   border: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(8),
                     borderSide: BorderSide.none,
@@ -372,7 +381,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
               onPressed: () => Navigator.pop(context),
               child: const Text(
                 'Cancel',
-                style: TextStyle(color: Colors.white70),
+                style: TextStyle(color: AppColors.blackColor),
               ),
             ),
             ElevatedButton(
@@ -389,14 +398,14 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 }
               },
               style: ElevatedButton.styleFrom(
-                backgroundColor: Colors.red,
+                backgroundColor: AppColors.primaryColor,
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(8),
                 ),
               ),
               child: const Text(
                 'Delete',
-                style: TextStyle(color: Colors.white),
+                style: TextStyle(color: AppColors.textColor),
               ),
             ),
           ],
@@ -412,22 +421,22 @@ class _ProfileScreenState extends State<ProfileScreen> {
       context: context,
       builder: (context) {
         return AlertDialog(
-          backgroundColor: const Color(0xFF3A3A50),
+          backgroundColor: AppColors.secondaryColor,
           title: const Text(
             'Change Password',
-            style: TextStyle(color: Colors.white),
+            style: TextStyle(color: AppColors.textColor),
           ),
           content: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
               TextField(
                 controller: currentPasswordController,
-                style: const TextStyle(color: Colors.white),
+                style: const TextStyle(color: AppColors.textColor),
                 decoration: InputDecoration(
                   labelText: 'Current Password',
-                  labelStyle: const TextStyle(color: Colors.white70),
+                  labelStyle: const TextStyle(color: AppColors.textColor),
                   filled: true,
-                  fillColor: const Color(0xFF2A2A40),
+                  fillColor: AppColors.fieldColor,
                   border: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(8),
                     borderSide: BorderSide.none,
@@ -438,12 +447,12 @@ class _ProfileScreenState extends State<ProfileScreen> {
               const SizedBox(height: 16),
               TextField(
                 controller: newPasswordController,
-                style: const TextStyle(color: Colors.white),
+                style: const TextStyle(color: AppColors.textColor),
                 decoration: InputDecoration(
                   labelText: 'New Password',
-                  labelStyle: const TextStyle(color: Colors.white70),
+                  labelStyle: const TextStyle(color: AppColors.textColor),
                   filled: true,
-                  fillColor: const Color(0xFF2A2A40),
+                  fillColor: AppColors.fieldColor,
                   border: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(8),
                     borderSide: BorderSide.none,
@@ -458,7 +467,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
               onPressed: () => Navigator.pop(context),
               child: const Text(
                 'Cancel',
-                style: TextStyle(color: Colors.white70),
+                style: TextStyle(color: AppColors.blackColor),
               ),
             ),
             ElevatedButton(
@@ -483,14 +492,14 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 }
               },
               style: ElevatedButton.styleFrom(
-                backgroundColor: const Color(0xFF2A2A40),
+                backgroundColor: AppColors.primaryColor,
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(8),
                 ),
               ),
               child: const Text(
                 'Change',
-                style: TextStyle(color: Colors.white),
+                style: TextStyle(color: AppColors.textColor),
               ),
             ),
           ],
@@ -504,18 +513,21 @@ class _ProfileScreenState extends State<ProfileScreen> {
       context: context,
       builder: (context) {
         return AlertDialog(
-          backgroundColor: const Color(0xFF3A3A50),
-          title: const Text('Logout', style: TextStyle(color: Colors.white)),
+          backgroundColor: AppColors.secondaryColor,
+          title: const Text(
+            'Logout',
+            style: TextStyle(color: AppColors.textColor),
+          ),
           content: const Text(
             'Are you sure you want to logout?',
-            style: TextStyle(color: Colors.white70),
+            style: TextStyle(color: AppColors.textColor),
           ),
           actions: [
             TextButton(
               onPressed: () => Navigator.pop(context),
               child: const Text(
                 'Cancel',
-                style: TextStyle(color: Colors.white70),
+                style: TextStyle(color: AppColors.blackColor),
               ),
             ),
             ElevatedButton(
@@ -524,14 +536,14 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 Navigator.pop(context);
               },
               style: ElevatedButton.styleFrom(
-                backgroundColor: Colors.blue,
+                backgroundColor: AppColors.primaryColor,
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(8),
                 ),
               ),
               child: const Text(
                 'Logout',
-                style: TextStyle(color: Colors.white),
+                style: TextStyle(color: AppColors.textColor),
               ),
             ),
           ],

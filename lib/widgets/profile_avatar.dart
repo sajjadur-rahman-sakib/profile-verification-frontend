@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:verify/utils/app_colors.dart';
 
 class ProfileAvatar extends StatelessWidget {
   final String imageUrl;
@@ -30,11 +31,11 @@ class ProfileAvatar extends StatelessWidget {
       errorBuilder: (context, error, stackTrace) {
         return CircleAvatar(
           radius: radius,
-          backgroundColor: Colors.grey[300],
+          backgroundColor: AppColors.secondaryColor,
           child: Icon(
             Icons.person,
             size: radius * 1.2,
-            color: Colors.grey[600],
+            color: AppColors.iconColor,
           ),
         );
       },

@@ -2,7 +2,7 @@ import 'dart:convert';
 import 'dart:io';
 import 'package:http/http.dart' as http;
 import 'package:path/path.dart' as path;
-import 'package:verify/core/constants.dart';
+import 'package:verify/core/app_constants.dart';
 
 class ApiService {
   static const String apiPrefix = '/api';

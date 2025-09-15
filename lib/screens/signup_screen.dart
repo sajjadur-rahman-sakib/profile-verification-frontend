@@ -8,6 +8,7 @@ import 'package:verify/bloc/auth_state.dart';
 import 'package:verify/screens/home_screen.dart';
 import 'package:verify/screens/login_screen.dart';
 import 'package:verify/screens/otp_screen.dart';
+import 'package:verify/utils/app_colors.dart';
 
 class SignupScreen extends StatefulWidget {
   const SignupScreen({super.key});
@@ -41,7 +42,7 @@ class _SignupScreenState extends State<SignupScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color(0xFF2A2A40),
+      backgroundColor: AppColors.secondaryColor,
       body: BlocConsumer<AuthBloc, AuthState>(
         listener: (context, state) {
           if (state is AuthOtpSent) {
@@ -75,7 +76,7 @@ class _SignupScreenState extends State<SignupScreen> {
                           IconButton(
                             icon: const Icon(
                               Icons.arrow_back,
-                              color: Colors.white,
+                              color: AppColors.iconColor,
                             ),
                             onPressed: () => Navigator.pushAndRemoveUntil(
                               context,
@@ -85,259 +86,290 @@ class _SignupScreenState extends State<SignupScreen> {
                               (route) => false,
                             ),
                           ),
-                          const SizedBox(height: 16),
-                          const Text(
-                            'Sign Up',
-                            style: TextStyle(
-                              color: Colors.white,
-                              fontSize: 32,
-                              fontWeight: FontWeight.bold,
-                            ),
-                          ),
-                          const SizedBox(height: 32),
-                          Center(
-                            child: GestureDetector(
-                              onTap: _pickImage,
-                              child: CircleAvatar(
-                                radius: 50,
-                                backgroundColor: const Color(0xFF3A3A50),
-                                backgroundImage: _profileImage != null
-                                    ? FileImage(_profileImage!)
-                                    : null,
-                                child: _profileImage == null
-                                    ? const Icon(
-                                        Icons.person,
-                                        color: Colors.white70,
-                                        size: 50,
-                                      )
-                                    : null,
-                              ),
-                            ),
-                          ),
-                          const SizedBox(height: 32),
-                          TextFormField(
-                            controller: _nameController,
-                            style: const TextStyle(color: Colors.white),
-                            decoration: InputDecoration(
-                              hintText: 'Name',
-                              hintStyle: const TextStyle(color: Colors.white54),
-                              prefixIcon: const Icon(
-                                Icons.person,
-                                color: Colors.white70,
-                              ),
-                              filled: true,
-                              fillColor: const Color(0xFF3A3A50),
-                              border: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(8),
-                                borderSide: BorderSide.none,
-                              ),
-                            ),
-                            validator: (value) =>
-                                value!.isEmpty ? 'Enter name' : null,
-                          ),
-                          const SizedBox(height: 16),
-                          TextFormField(
-                            controller: _emailController,
-                            style: const TextStyle(color: Colors.white),
-                            decoration: InputDecoration(
-                              hintText: 'Email',
-                              hintStyle: const TextStyle(color: Colors.white54),
-                              prefixIcon: const Icon(
-                                Icons.mail,
-                                color: Colors.white70,
-                              ),
-                              filled: true,
-                              fillColor: const Color(0xFF3A3A50),
-                              border: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(8),
-                                borderSide: BorderSide.none,
-                              ),
-                            ),
-                            validator: (value) => value!.contains('@')
-                                ? null
-                                : 'Enter valid email',
-                          ),
-                          const SizedBox(height: 16),
-                          TextFormField(
-                            controller: _passwordController,
-                            style: const TextStyle(color: Colors.white),
-                            obscureText: _obscurePassword,
-                            decoration: InputDecoration(
-                              hintText: 'Password',
-                              hintStyle: const TextStyle(color: Colors.white54),
-                              prefixIcon: const Icon(
-                                Icons.lock,
-                                color: Colors.white70,
-                              ),
-                              suffixIcon: IconButton(
-                                icon: Icon(
-                                  _obscurePassword
-                                      ? Icons.visibility_off
-                                      : Icons.visibility,
-                                  color: Colors.white70,
-                                ),
-                                onPressed: () {
-                                  setState(() {
-                                    _obscurePassword = !_obscurePassword;
-                                  });
-                                },
-                              ),
-                              filled: true,
-                              fillColor: const Color(0xFF3A3A50),
-                              border: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(8),
-                                borderSide: BorderSide.none,
-                              ),
-                            ),
-                            validator: (value) => value!.length < 6
-                                ? 'Password must be at least 6 characters'
-                                : null,
-                          ),
-                          const SizedBox(height: 16),
-                          TextFormField(
-                            controller: _confirmPasswordController,
-                            style: const TextStyle(color: Colors.white),
-                            obscureText: _obscureConfirmPassword,
-                            decoration: InputDecoration(
-                              hintText: 'Confirm Password',
-                              hintStyle: const TextStyle(color: Colors.white54),
-                              prefixIcon: const Icon(
-                                Icons.lock,
-                                color: Colors.white70,
-                              ),
-                              suffixIcon: IconButton(
-                                icon: Icon(
-                                  _obscureConfirmPassword
-                                      ? Icons.visibility_off
-                                      : Icons.visibility,
-                                  color: Colors.white70,
-                                ),
-                                onPressed: () {
-                                  setState(() {
-                                    _obscureConfirmPassword =
-                                        !_obscureConfirmPassword;
-                                  });
-                                },
-                              ),
-                              filled: true,
-                              fillColor: const Color(0xFF3A3A50),
-                              border: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(8),
-                                borderSide: BorderSide.none,
-                              ),
-                            ),
-                            validator: (value) =>
-                                value != _passwordController.text
-                                ? 'Passwords do not match'
-                                : null,
-                          ),
-                          const SizedBox(height: 16),
-                          TextFormField(
-                            controller: _addressController,
-                            style: const TextStyle(color: Colors.white),
-                            decoration: InputDecoration(
-                              hintText: 'Address',
-                              hintStyle: const TextStyle(color: Colors.white54),
-                              prefixIcon: const Icon(
-                                Icons.location_on,
-                                color: Colors.white70,
-                              ),
-                              filled: true,
-                              fillColor: const Color(0xFF3A3A50),
-                              border: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(8),
-                                borderSide: BorderSide.none,
-                              ),
-                            ),
-                            validator: (value) =>
-                                value!.isEmpty ? 'Enter address' : null,
-                          ),
-                          const SizedBox(height: 24),
-                          SizedBox(
-                            width: double.infinity,
-                            child: ElevatedButton(
-                              onPressed: state is AuthLoading
-                                  ? null
-                                  : () {
-                                      if (_formKey.currentState!.validate() &&
-                                          _profileImage != null) {
-                                        context.read<AuthBloc>().add(
-                                          SignupEvent(
-                                            name: _nameController.text,
-                                            email: _emailController.text,
-                                            password: _passwordController.text,
-                                            address: _addressController.text,
-                                            profileImagePath:
-                                                _profileImage!.path,
-                                          ),
-                                        );
-                                      } else {
-                                        ScaffoldMessenger.of(
-                                          context,
-                                        ).showSnackBar(
-                                          const SnackBar(
-                                            content: Text(
-                                              'Please fill all fields and select a profile picture',
-                                            ),
-                                          ),
-                                        );
-                                      }
-                                    },
-                              style: ElevatedButton.styleFrom(
-                                backgroundColor: const Color(0xFF3A3A50),
-                                padding: const EdgeInsets.symmetric(
-                                  vertical: 16,
-                                ),
-                                shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(8),
+                          Column(
+                            children: [
+                              const Text(
+                                'Sign Up',
+                                style: TextStyle(
+                                  color: AppColors.primaryColor,
+                                  fontSize: 40,
+                                  fontWeight: FontWeight.bold,
                                 ),
                               ),
-                              child: state is AuthLoading
-                                  ? const SizedBox(
-                                      height: 20,
-                                      width: 20,
-                                      child: CircularProgressIndicator(
-                                        valueColor:
-                                            AlwaysStoppedAnimation<Color>(
-                                              Colors.white,
-                                            ),
-                                        strokeWidth: 2,
-                                      ),
-                                    )
-                                  : const Text(
-                                      'Signup',
-                                      style: TextStyle(
-                                        color: Colors.white,
-                                        fontSize: 16,
-                                      ),
-                                    ),
-                            ),
-                          ),
-                          const SizedBox(height: 24),
-                          Center(
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                const Text(
-                                  'Already have an account? ',
-                                  style: TextStyle(color: Colors.white70),
-                                ),
-                                TextButton(
-                                  onPressed: () {
-                                    Navigator.pushReplacement(
-                                      context,
-                                      MaterialPageRoute(
-                                        builder: (context) => LoginScreen(),
-                                      ),
-                                    );
-                                  },
-                                  child: const Text(
-                                    'Login',
-                                    style: TextStyle(color: Colors.white),
+                              const SizedBox(height: 32),
+                              Center(
+                                child: GestureDetector(
+                                  onTap: _pickImage,
+                                  child: CircleAvatar(
+                                    radius: 50,
+                                    backgroundColor: AppColors.fieldColor,
+                                    backgroundImage: _profileImage != null
+                                        ? FileImage(_profileImage!)
+                                        : null,
+                                    child: _profileImage == null
+                                        ? const Icon(
+                                            Icons.person_add_outlined,
+                                            color: AppColors.iconColor,
+                                            size: 50,
+                                          )
+                                        : null,
                                   ),
                                 ),
-                              ],
-                            ),
+                              ),
+                              const SizedBox(height: 32),
+                              TextFormField(
+                                controller: _nameController,
+                                style: const TextStyle(
+                                  color: AppColors.textColor,
+                                ),
+                                decoration: InputDecoration(
+                                  hintText: 'Name',
+                                  hintStyle: const TextStyle(
+                                    color: AppColors.textColor,
+                                  ),
+                                  prefixIcon: const Icon(
+                                    Icons.person,
+                                    color: AppColors.iconColor,
+                                  ),
+                                  filled: true,
+                                  fillColor: AppColors.fieldColor,
+                                  border: OutlineInputBorder(
+                                    borderRadius: BorderRadius.circular(8),
+                                    borderSide: BorderSide.none,
+                                  ),
+                                ),
+                                validator: (value) =>
+                                    value!.isEmpty ? 'Enter name' : null,
+                              ),
+                              const SizedBox(height: 16),
+                              TextFormField(
+                                controller: _emailController,
+                                style: const TextStyle(
+                                  color: AppColors.textColor,
+                                ),
+                                decoration: InputDecoration(
+                                  hintText: 'Email',
+                                  hintStyle: const TextStyle(
+                                    color: AppColors.textColor,
+                                  ),
+                                  prefixIcon: const Icon(
+                                    Icons.mail,
+                                    color: AppColors.iconColor,
+                                  ),
+                                  filled: true,
+                                  fillColor: AppColors.fieldColor,
+                                  border: OutlineInputBorder(
+                                    borderRadius: BorderRadius.circular(8),
+                                    borderSide: BorderSide.none,
+                                  ),
+                                ),
+                                validator: (value) => value!.contains('@')
+                                    ? null
+                                    : 'Enter valid email',
+                              ),
+                              const SizedBox(height: 16),
+                              TextFormField(
+                                controller: _passwordController,
+                                style: const TextStyle(
+                                  color: AppColors.textColor,
+                                ),
+                                obscureText: _obscurePassword,
+                                decoration: InputDecoration(
+                                  hintText: 'Password',
+                                  hintStyle: const TextStyle(
+                                    color: AppColors.textColor,
+                                  ),
+                                  prefixIcon: const Icon(
+                                    Icons.lock,
+                                    color: AppColors.iconColor,
+                                  ),
+                                  suffixIcon: IconButton(
+                                    icon: Icon(
+                                      _obscurePassword
+                                          ? Icons.visibility_off
+                                          : Icons.visibility,
+                                      color: AppColors.iconColor,
+                                    ),
+                                    onPressed: () {
+                                      setState(() {
+                                        _obscurePassword = !_obscurePassword;
+                                      });
+                                    },
+                                  ),
+                                  filled: true,
+                                  fillColor: AppColors.fieldColor,
+                                  border: OutlineInputBorder(
+                                    borderRadius: BorderRadius.circular(8),
+                                    borderSide: BorderSide.none,
+                                  ),
+                                ),
+                                validator: (value) => value!.length < 6
+                                    ? 'Password must be at least 6 characters'
+                                    : null,
+                              ),
+                              const SizedBox(height: 16),
+                              TextFormField(
+                                controller: _confirmPasswordController,
+                                style: const TextStyle(
+                                  color: AppColors.textColor,
+                                ),
+                                obscureText: _obscureConfirmPassword,
+                                decoration: InputDecoration(
+                                  hintText: 'Confirm Password',
+                                  hintStyle: const TextStyle(
+                                    color: AppColors.textColor,
+                                  ),
+                                  prefixIcon: const Icon(
+                                    Icons.lock,
+                                    color: AppColors.iconColor,
+                                  ),
+                                  suffixIcon: IconButton(
+                                    icon: Icon(
+                                      _obscureConfirmPassword
+                                          ? Icons.visibility_off
+                                          : Icons.visibility,
+                                      color: AppColors.iconColor,
+                                    ),
+                                    onPressed: () {
+                                      setState(() {
+                                        _obscureConfirmPassword =
+                                            !_obscureConfirmPassword;
+                                      });
+                                    },
+                                  ),
+                                  filled: true,
+                                  fillColor: AppColors.fieldColor,
+                                  border: OutlineInputBorder(
+                                    borderRadius: BorderRadius.circular(8),
+                                    borderSide: BorderSide.none,
+                                  ),
+                                ),
+                                validator: (value) =>
+                                    value != _passwordController.text
+                                    ? 'Passwords do not match'
+                                    : null,
+                              ),
+                              const SizedBox(height: 16),
+                              TextFormField(
+                                controller: _addressController,
+                                style: const TextStyle(
+                                  color: AppColors.textColor,
+                                ),
+                                decoration: InputDecoration(
+                                  hintText: 'Address',
+                                  hintStyle: const TextStyle(
+                                    color: AppColors.textColor,
+                                  ),
+                                  prefixIcon: const Icon(
+                                    Icons.location_on,
+                                    color: AppColors.iconColor,
+                                  ),
+                                  filled: true,
+                                  fillColor: AppColors.fieldColor,
+                                  border: OutlineInputBorder(
+                                    borderRadius: BorderRadius.circular(8),
+                                    borderSide: BorderSide.none,
+                                  ),
+                                ),
+                                validator: (value) =>
+                                    value!.isEmpty ? 'Enter address' : null,
+                              ),
+                              const SizedBox(height: 32),
+                              SizedBox(
+                                width: double.infinity,
+                                child: ElevatedButton(
+                                  onPressed: state is AuthLoading
+                                      ? null
+                                      : () {
+                                          if (_formKey.currentState!
+                                                  .validate() &&
+                                              _profileImage != null) {
+                                            context.read<AuthBloc>().add(
+                                              SignupEvent(
+                                                name: _nameController.text,
+                                                email: _emailController.text,
+                                                password:
+                                                    _passwordController.text,
+                                                address:
+                                                    _addressController.text,
+                                                profileImagePath:
+                                                    _profileImage!.path,
+                                              ),
+                                            );
+                                          } else {
+                                            ScaffoldMessenger.of(
+                                              context,
+                                            ).showSnackBar(
+                                              const SnackBar(
+                                                content: Text(
+                                                  'Please fill all fields and select a profile picture',
+                                                ),
+                                              ),
+                                            );
+                                          }
+                                        },
+                                  style: ElevatedButton.styleFrom(
+                                    backgroundColor: AppColors.primaryColor,
+                                    padding: const EdgeInsets.symmetric(
+                                      vertical: 16,
+                                    ),
+                                    shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(8),
+                                    ),
+                                  ),
+                                  child: state is AuthLoading
+                                      ? const SizedBox(
+                                          height: 20,
+                                          width: 20,
+                                          child: CircularProgressIndicator(
+                                            valueColor:
+                                                AlwaysStoppedAnimation<Color>(
+                                                  AppColors.textColor,
+                                                ),
+                                            strokeWidth: 2,
+                                          ),
+                                        )
+                                      : const Text(
+                                          'Signup',
+                                          style: TextStyle(
+                                            color: AppColors.textColor,
+                                            fontSize: 16,
+                                          ),
+                                        ),
+                                ),
+                              ),
+                              const SizedBox(height: 24),
+                              Center(
+                                child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    const Text(
+                                      'Already have an account? ',
+                                      style: TextStyle(
+                                        color: AppColors.textColor,
+                                      ),
+                                    ),
+                                    TextButton(
+                                      onPressed: () {
+                                        Navigator.pushReplacement(
+                                          context,
+                                          MaterialPageRoute(
+                                            builder: (context) => LoginScreen(),
+                                          ),
+                                        );
+                                      },
+                                      child: const Text(
+                                        'Login',
+                                        style: TextStyle(
+                                          color: AppColors.blackColor,
+                                          fontWeight: FontWeight.bold,
+                                        ),
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ],
                           ),
                         ],
                       ),

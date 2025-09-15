@@ -4,6 +4,7 @@ import 'package:verify/bloc/auth_bloc.dart';
 import 'package:verify/bloc/auth_event.dart';
 import 'package:verify/bloc/auth_state.dart';
 import 'package:verify/screens/reset_password.dart';
+import 'package:verify/utils/app_colors.dart';
 
 class ForgotPasswordScreen extends StatefulWidget {
   const ForgotPasswordScreen({super.key});
@@ -19,12 +20,12 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color(0xFF2A2A40),
+      backgroundColor: AppColors.secondaryColor,
       appBar: AppBar(
-        backgroundColor: const Color(0xFF2A2A40),
+        backgroundColor: AppColors.secondaryColor,
         elevation: 0,
         leading: IconButton(
-          icon: const Icon(Icons.arrow_back, color: Colors.white),
+          icon: const Icon(Icons.arrow_back, color: AppColors.iconColor),
           onPressed: () => Navigator.pop(context),
         ),
       ),
@@ -62,29 +63,32 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
                     const Text(
                       'Forgot Password',
                       style: TextStyle(
-                        color: Colors.white,
+                        color: AppColors.primaryColor,
                         fontSize: 32,
                         fontWeight: FontWeight.bold,
                       ),
                     ),
-                    const SizedBox(height: 8),
+                    const SizedBox(height: 24),
                     const Text(
                       'Enter your email address to receive a password reset code.',
-                      style: TextStyle(color: Colors.white70, fontSize: 16),
+                      style: TextStyle(
+                        color: AppColors.textColor,
+                        fontSize: 16,
+                      ),
                     ),
                     const SizedBox(height: 48),
                     TextFormField(
                       controller: _emailController,
-                      style: const TextStyle(color: Colors.white),
+                      style: const TextStyle(color: AppColors.textColor),
                       decoration: InputDecoration(
                         hintText: 'Email',
-                        hintStyle: const TextStyle(color: Colors.white54),
+                        hintStyle: const TextStyle(color: AppColors.textColor),
                         prefixIcon: const Icon(
                           Icons.mail,
-                          color: Colors.white70,
+                          color: AppColors.iconColor,
                         ),
                         filled: true,
-                        fillColor: const Color(0xFF3A3A50),
+                        fillColor: AppColors.fieldColor,
                         border: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(8),
                           borderSide: BorderSide.none,
@@ -111,7 +115,7 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
                                     }
                                   },
                             style: ElevatedButton.styleFrom(
-                              backgroundColor: const Color(0xFF3A3A50),
+                              backgroundColor: AppColors.primaryColor,
                               padding: const EdgeInsets.symmetric(vertical: 16),
                               shape: RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(8),
@@ -124,14 +128,14 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
                                     child: CircularProgressIndicator(
                                       strokeWidth: 2,
                                       valueColor: AlwaysStoppedAnimation<Color>(
-                                        Colors.white,
+                                        AppColors.textColor,
                                       ),
                                     ),
                                   )
                                 : const Text(
                                     'Send Reset Code',
                                     style: TextStyle(
-                                      color: Colors.white,
+                                      color: AppColors.textColor,
                                       fontSize: 16,
                                     ),
                                   ),

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:verify/utils/app_colors.dart';
 
 class ButtonCard extends StatelessWidget {
   final IconData icon;
@@ -16,19 +17,19 @@ class ButtonCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       decoration: BoxDecoration(
-        color: const Color.fromARGB(255, 229, 233, 235),
+        color: AppColors.buttonColor,
         borderRadius: BorderRadius.circular(8),
         boxShadow: [
           BoxShadow(
             // ignore: deprecated_member_use
-            color: Colors.black.withOpacity(0.04),
+            color: AppColors.blackColor.withOpacity(0.04),
             blurRadius: 8,
             offset: const Offset(8, 8),
           ),
         ],
       ),
       child: Material(
-        color: Colors.transparent,
+        color: AppColors.transparentColor,
         child: InkWell(
           borderRadius: BorderRadius.circular(12),
           onTap: onTap,
@@ -37,16 +38,15 @@ class ButtonCard extends StatelessWidget {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Icon(
-                  icon,
-                  size: 34,
-                  color: const Color.fromARGB(255, 154, 196, 208),
-                ),
+                Icon(icon, size: 34, color: AppColors.primaryColor),
                 const SizedBox(height: 12),
                 Text(
                   label,
                   textAlign: TextAlign.center,
-                  style: const TextStyle(fontSize: 12, color: Colors.black87),
+                  style: const TextStyle(
+                    fontSize: 12,
+                    color: AppColors.textColor,
+                  ),
                 ),
               ],
             ),

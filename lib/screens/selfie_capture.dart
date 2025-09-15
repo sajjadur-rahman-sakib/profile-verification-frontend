@@ -6,6 +6,7 @@ import 'package:verify/bloc/auth_bloc.dart';
 import 'package:verify/bloc/auth_event.dart';
 import 'package:verify/bloc/auth_state.dart';
 import 'package:verify/screens/login_screen.dart';
+import 'package:verify/utils/app_colors.dart';
 
 class SelfieCapture extends StatefulWidget {
   final String email;
@@ -41,19 +42,18 @@ class _SelfieCaptureState extends State<SelfieCapture> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Color(0xFF2A2A40),
-
+      backgroundColor: AppColors.secondaryColor,
       body: Container(
         decoration: const BoxDecoration(
           gradient: LinearGradient(
             begin: Alignment.topCenter,
             end: Alignment.bottomCenter,
-            colors: [Color(0xFF2A2A40), Color(0xFF2A2A40)],
+            colors: [AppColors.secondaryColor, AppColors.secondaryColor],
           ),
         ),
         child: Center(
           child: Card(
-            color: Colors.white70,
+            color: AppColors.fieldColor,
             elevation: 8,
             margin: const EdgeInsets.all(20),
             shape: RoundedRectangleBorder(
@@ -90,7 +90,7 @@ class _SelfieCaptureState extends State<SelfieCapture> {
                               width: 300,
                               height: 200,
                               decoration: BoxDecoration(
-                                border: Border.all(color: Colors.grey),
+                                border: Border.all(color: AppColors.whiteColor),
                               ),
                               child: _selfieImage != null
                                   ? Image.file(_selfieImage!, fit: BoxFit.cover)
@@ -106,7 +106,8 @@ class _SelfieCaptureState extends State<SelfieCapture> {
                                       ElevatedButton(
                                         onPressed: _retakeSelfie,
                                         style: ElevatedButton.styleFrom(
-                                          backgroundColor: Colors.red,
+                                          backgroundColor:
+                                              AppColors.primaryColor,
                                           minimumSize: const Size(120, 50),
                                           shape: RoundedRectangleBorder(
                                             borderRadius: BorderRadius.circular(
@@ -116,7 +117,9 @@ class _SelfieCaptureState extends State<SelfieCapture> {
                                         ),
                                         child: const Text(
                                           'Retake',
-                                          style: TextStyle(color: Colors.white),
+                                          style: TextStyle(
+                                            color: AppColors.textColor,
+                                          ),
                                         ),
                                       ),
                                       ElevatedButton(
@@ -142,7 +145,8 @@ class _SelfieCaptureState extends State<SelfieCapture> {
                                           }
                                         },
                                         style: ElevatedButton.styleFrom(
-                                          backgroundColor: Colors.blue,
+                                          backgroundColor:
+                                              AppColors.primaryColor,
                                           minimumSize: const Size(120, 50),
                                           shape: RoundedRectangleBorder(
                                             borderRadius: BorderRadius.circular(
@@ -152,7 +156,9 @@ class _SelfieCaptureState extends State<SelfieCapture> {
                                         ),
                                         child: const Text(
                                           'Submit',
-                                          style: TextStyle(color: Colors.white),
+                                          style: TextStyle(
+                                            color: AppColors.textColor,
+                                          ),
                                         ),
                                       ),
                                     ],
@@ -166,14 +172,14 @@ class _SelfieCaptureState extends State<SelfieCapture> {
                               width: 300,
                               height: 200,
                               decoration: BoxDecoration(
-                                border: Border.all(color: Colors.grey),
+                                border: Border.all(color: AppColors.whiteColor),
                               ),
                               child: const Center(
                                 child: Text(
                                   'Place Face Here',
                                   style: TextStyle(
                                     fontSize: 18,
-                                    color: Colors.grey,
+                                    color: AppColors.textColor,
                                   ),
                                 ),
                               ),
@@ -182,7 +188,7 @@ class _SelfieCaptureState extends State<SelfieCapture> {
                             ElevatedButton(
                               onPressed: _captureSelfie,
                               style: ElevatedButton.styleFrom(
-                                backgroundColor: Colors.blue,
+                                backgroundColor: AppColors.primaryColor,
                                 minimumSize: const Size(200, 50),
                                 shape: RoundedRectangleBorder(
                                   borderRadius: BorderRadius.circular(8),
@@ -192,7 +198,9 @@ class _SelfieCaptureState extends State<SelfieCapture> {
                                 _selfieImage == null
                                     ? 'Capture Selfie'
                                     : 'Selfie Captured',
-                                style: const TextStyle(color: Colors.white),
+                                style: const TextStyle(
+                                  color: AppColors.textColor,
+                                ),
                               ),
                             ),
                           ],

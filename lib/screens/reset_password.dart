@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:verify/bloc/auth_bloc.dart';
 import 'package:verify/bloc/auth_event.dart';
 import 'package:verify/bloc/auth_state.dart';
+import 'package:verify/utils/app_colors.dart';
 
 class ResetPasswordScreen extends StatefulWidget {
   final String email;
@@ -22,12 +23,12 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color(0xFF2A2A40),
+      backgroundColor: AppColors.secondaryColor,
       appBar: AppBar(
-        backgroundColor: const Color(0xFF2A2A40),
+        backgroundColor: AppColors.secondaryColor,
         elevation: 0,
         leading: IconButton(
-          icon: const Icon(Icons.arrow_back, color: Colors.white),
+          icon: const Icon(Icons.arrow_back, color: AppColors.iconColor),
           onPressed: () => Navigator.pop(context),
         ),
       ),
@@ -63,29 +64,32 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
                     const Text(
                       'Reset Password',
                       style: TextStyle(
-                        color: Colors.white,
+                        color: AppColors.primaryColor,
                         fontSize: 32,
                         fontWeight: FontWeight.bold,
                       ),
                     ),
-                    const SizedBox(height: 8),
+                    const SizedBox(height: 24),
                     const Text(
                       'Enter the OTP received in your email and your new password.',
-                      style: TextStyle(color: Colors.white70, fontSize: 16),
+                      style: TextStyle(
+                        color: AppColors.textColor,
+                        fontSize: 16,
+                      ),
                     ),
                     const SizedBox(height: 48),
                     TextFormField(
                       controller: _otpController,
-                      style: const TextStyle(color: Colors.white),
+                      style: const TextStyle(color: AppColors.textColor),
                       decoration: InputDecoration(
                         hintText: 'Enter OTP',
-                        hintStyle: const TextStyle(color: Colors.white54),
+                        hintStyle: const TextStyle(color: AppColors.textColor),
                         prefixIcon: const Icon(
                           Icons.lock_clock,
-                          color: Colors.white70,
+                          color: AppColors.iconColor,
                         ),
                         filled: true,
-                        fillColor: const Color(0xFF3A3A50),
+                        fillColor: AppColors.fieldColor,
                         border: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(8),
                           borderSide: BorderSide.none,
@@ -97,21 +101,21 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
                     const SizedBox(height: 16),
                     TextFormField(
                       controller: _passwordController,
-                      style: const TextStyle(color: Colors.white),
+                      style: const TextStyle(color: AppColors.textColor),
                       obscureText: _obscurePassword,
                       decoration: InputDecoration(
                         hintText: 'New Password',
-                        hintStyle: const TextStyle(color: Colors.white54),
+                        hintStyle: const TextStyle(color: AppColors.textColor),
                         prefixIcon: const Icon(
                           Icons.lock,
-                          color: Colors.white70,
+                          color: AppColors.iconColor,
                         ),
                         suffixIcon: IconButton(
                           icon: Icon(
                             _obscurePassword
                                 ? Icons.visibility_off
                                 : Icons.visibility,
-                            color: Colors.white70,
+                            color: AppColors.iconColor,
                           ),
                           onPressed: () {
                             setState(() {
@@ -120,7 +124,7 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
                           },
                         ),
                         filled: true,
-                        fillColor: const Color(0xFF3A3A50),
+                        fillColor: AppColors.fieldColor,
                         border: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(8),
                           borderSide: BorderSide.none,
@@ -150,7 +154,7 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
                                     }
                                   },
                             style: ElevatedButton.styleFrom(
-                              backgroundColor: const Color(0xFF3A3A50),
+                              backgroundColor: AppColors.primaryColor,
                               padding: const EdgeInsets.symmetric(vertical: 16),
                               shape: RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(8),
@@ -163,14 +167,14 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
                                     child: CircularProgressIndicator(
                                       strokeWidth: 2,
                                       valueColor: AlwaysStoppedAnimation<Color>(
-                                        Colors.white,
+                                        AppColors.textColor,
                                       ),
                                     ),
                                   )
                                 : const Text(
                                     'Reset Password',
                                     style: TextStyle(
-                                      color: Colors.white,
+                                      color: AppColors.textColor,
                                       fontSize: 16,
                                     ),
                                   ),

@@ -4,6 +4,7 @@ import 'package:verify/bloc/auth_bloc.dart';
 import 'package:verify/bloc/auth_event.dart';
 import 'package:verify/bloc/auth_state.dart';
 import 'package:verify/screens/document_capture.dart';
+import 'package:verify/utils/app_colors.dart';
 
 class OtpScreen extends StatefulWidget {
   final String email;
@@ -56,7 +57,7 @@ class _OtpScreenState extends State<OtpScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color(0xFF2A2A40),
+      backgroundColor: AppColors.secondaryColor,
       resizeToAvoidBottomInset: true,
       body: BlocListener<AuthBloc, AuthState>(
         listener: (context, state) {
@@ -89,18 +90,25 @@ class _OtpScreenState extends State<OtpScreen> {
                 Align(
                   alignment: Alignment.topLeft,
                   child: IconButton(
-                    icon: const Icon(Icons.arrow_back, color: Colors.white),
+                    icon: const Icon(
+                      Icons.arrow_back,
+                      color: AppColors.iconColor,
+                    ),
                     onPressed: () => Navigator.pop(context),
                   ),
                 ),
                 const SizedBox(height: 32),
-                const Icon(Icons.security, size: 80, color: Colors.white70),
+                const Icon(
+                  Icons.security,
+                  size: 80,
+                  color: AppColors.primaryColor,
+                ),
                 const SizedBox(height: 24),
                 const Text(
                   'OTP Verification',
                   style: TextStyle(
-                    color: Colors.white,
-                    fontSize: 24,
+                    color: AppColors.primaryColor,
+                    fontSize: 32,
                     fontWeight: FontWeight.bold,
                   ),
                 ),
@@ -108,7 +116,10 @@ class _OtpScreenState extends State<OtpScreen> {
                 Text(
                   'Thank you for registering with us. Please type the OTP as shared on your email ${widget.email}',
                   textAlign: TextAlign.center,
-                  style: const TextStyle(color: Colors.white70, fontSize: 16),
+                  style: const TextStyle(
+                    color: AppColors.textColor,
+                    fontSize: 16,
+                  ),
                 ),
                 const SizedBox(height: 32),
                 Row(
@@ -122,14 +133,14 @@ class _OtpScreenState extends State<OtpScreen> {
                         keyboardType: TextInputType.text,
                         textAlign: TextAlign.center,
                         style: const TextStyle(
-                          color: Colors.white,
+                          color: AppColors.textColor,
                           fontSize: 24,
                         ),
                         maxLength: 1,
                         decoration: InputDecoration(
                           counterText: '',
                           filled: true,
-                          fillColor: const Color(0xFF3A3A50),
+                          fillColor: AppColors.fieldColor,
                           border: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(8),
                             borderSide: BorderSide.none,
@@ -156,7 +167,7 @@ class _OtpScreenState extends State<OtpScreen> {
                   children: [
                     const Text(
                       'OTP not received? ',
-                      style: TextStyle(color: Colors.white70),
+                      style: TextStyle(color: AppColors.textColor),
                     ),
                     GestureDetector(
                       onTap: () {
@@ -167,7 +178,7 @@ class _OtpScreenState extends State<OtpScreen> {
                       child: const Text(
                         'RESEND',
                         style: TextStyle(
-                          color: Colors.white,
+                          color: AppColors.blackColor,
                           fontWeight: FontWeight.bold,
                         ),
                       ),
@@ -193,7 +204,7 @@ class _OtpScreenState extends State<OtpScreen> {
                       }
                     },
                     style: ElevatedButton.styleFrom(
-                      backgroundColor: const Color(0xFF3A3A50),
+                      backgroundColor: AppColors.primaryColor,
                       padding: const EdgeInsets.symmetric(vertical: 16),
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(8),
@@ -201,7 +212,10 @@ class _OtpScreenState extends State<OtpScreen> {
                     ),
                     child: const Text(
                       'Submit',
-                      style: TextStyle(color: Colors.white, fontSize: 16),
+                      style: TextStyle(
+                        color: AppColors.textColor,
+                        fontSize: 16,
+                      ),
                     ),
                   ),
                 ),
