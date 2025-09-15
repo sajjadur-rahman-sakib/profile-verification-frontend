@@ -5,6 +5,7 @@ import 'package:image_picker/image_picker.dart';
 import 'package:verify/bloc/auth_bloc.dart';
 import 'package:verify/bloc/auth_event.dart';
 import 'package:verify/bloc/auth_state.dart';
+import 'package:verify/screens/home_screen.dart';
 import 'package:verify/screens/login_screen.dart';
 import 'package:verify/screens/otp_screen.dart';
 
@@ -76,7 +77,13 @@ class _SignupScreenState extends State<SignupScreen> {
                               Icons.arrow_back,
                               color: Colors.white,
                             ),
-                            onPressed: () => Navigator.pop(context),
+                            onPressed: () => Navigator.pushAndRemoveUntil(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => const HomeScreen(),
+                              ),
+                              (route) => false,
+                            ),
                           ),
                           const SizedBox(height: 16),
                           const Text(

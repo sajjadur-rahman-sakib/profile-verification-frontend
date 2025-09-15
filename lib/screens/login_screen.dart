@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:verify/bloc/auth_bloc.dart';
 import 'package:verify/bloc/auth_event.dart';
 import 'package:verify/bloc/auth_state.dart';
+import 'package:verify/screens/home_screen.dart';
 import 'package:verify/screens/profile_screen.dart';
 import 'package:verify/screens/signup_screen.dart';
 import 'package:verify/screens/forgot_password.dart';
@@ -49,6 +50,16 @@ class _LoginScreenState extends State<LoginScreen> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
+                    IconButton(
+                      icon: const Icon(Icons.arrow_back, color: Colors.white),
+                      onPressed: () => Navigator.pushAndRemoveUntil(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => const HomeScreen(),
+                        ),
+                        (route) => false,
+                      ),
+                    ),
                     const Text(
                       'Login',
                       style: TextStyle(

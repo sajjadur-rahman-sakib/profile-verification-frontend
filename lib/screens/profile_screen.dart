@@ -6,6 +6,7 @@ import 'package:verify/bloc/auth_bloc.dart';
 import 'package:verify/bloc/auth_event.dart';
 import 'package:verify/bloc/auth_state.dart';
 import 'package:verify/core/constants.dart';
+import 'package:verify/screens/home_screen.dart';
 import 'package:verify/screens/login_screen.dart';
 import 'package:verify/widgets/profile_avatar.dart';
 
@@ -138,7 +139,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                           onPressed: () => Navigator.pushAndRemoveUntil(
                             context,
                             MaterialPageRoute(
-                              builder: (context) => const LoginScreen(),
+                              builder: (context) => const HomeScreen(),
                             ),
                             (route) => false,
                           ),
