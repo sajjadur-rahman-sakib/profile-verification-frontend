@@ -32,9 +32,9 @@ class _ForgotPasswordState extends State<ForgotPassword> {
       body: BlocListener<AuthBloc, AuthState>(
         listener: (context, state) {
           if (state is AuthForgotPasswordSuccess) {
-            ScaffoldMessenger.of(
-              context,
-            ).showSnackBar(SnackBar(content: Text(state.message)));
+            ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(content: Text('OTP send to your given email')),
+            );
             Navigator.push(
               context,
               MaterialPageRoute(
@@ -45,7 +45,7 @@ class _ForgotPasswordState extends State<ForgotPassword> {
           } else if (state is AuthError) {
             ScaffoldMessenger.of(
               context,
-            ).showSnackBar(SnackBar(content: Text(state.message)));
+            ).showSnackBar(SnackBar(content: Text('Failed to send OTP')));
           }
         },
         child: SafeArea(

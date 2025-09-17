@@ -8,6 +8,7 @@ import 'package:verify/screens/profile_screen.dart';
 import 'package:verify/screens/signup_screen.dart';
 import 'package:verify/screens/forgot_password.dart';
 import 'package:verify/utils/app_colors.dart';
+import 'package:verify/widgets/alert_dialog.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -34,9 +35,11 @@ class _LoginScreenState extends State<LoginScreen> {
               MaterialPageRoute(builder: (context) => ProfileScreen()),
             );
           } else if (state is AuthError) {
-            ScaffoldMessenger.of(
+            showAlertDialog(
               context,
-            ).showSnackBar(SnackBar(content: Text(state.message)));
+              'Wrong Credentials',
+              'Invalid email or password',
+            );
           }
         },
         child: SafeArea(

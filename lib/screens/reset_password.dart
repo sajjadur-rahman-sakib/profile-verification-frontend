@@ -4,6 +4,7 @@ import 'package:verify/bloc/auth_bloc.dart';
 import 'package:verify/bloc/auth_event.dart';
 import 'package:verify/bloc/auth_state.dart';
 import 'package:verify/utils/app_colors.dart';
+import 'package:verify/widgets/alert_dialog.dart';
 
 class ResetPassword extends StatefulWidget {
   final String email;
@@ -35,18 +36,14 @@ class _ResetPasswordState extends State<ResetPassword> {
       body: BlocListener<AuthBloc, AuthState>(
         listener: (context, state) {
           if (state is AuthResetPasswordSuccess) {
-            ScaffoldMessenger.of(context).showSnackBar(
-              const SnackBar(
-                content: Text(
-                  'Password reset successful. Please login with your new password.',
-                ),
-              ),
+            showAlertDialog(
+              context,
+              'Password Reset',
+              'Password reset successful. Please login with your new password',
             );
             Navigator.of(context).popUntil((route) => route.isFirst);
           } else if (state is AuthError) {
-            ScaffoldMessenger.of(
-              context,
-            ).showSnackBar(SnackBar(content: Text(state.message)));
+            showAlertDialog(context, 'Error', 'Failed to reset password');
           }
         },
         child: SafeArea(

@@ -9,6 +9,7 @@ import 'package:verify/core/app_constants.dart';
 import 'package:verify/screens/home_screen.dart';
 import 'package:verify/screens/login_screen.dart';
 import 'package:verify/utils/app_colors.dart';
+import 'package:verify/widgets/alert_dialog.dart';
 import 'package:verify/widgets/profile_avatar.dart';
 
 class ProfileScreen extends StatefulWidget {
@@ -81,8 +82,10 @@ class _ProfileScreenState extends State<ProfileScreen> {
               (route) => false,
             );
           } else if (state is AuthPasswordChanged) {
-            ScaffoldMessenger.of(context).showSnackBar(
-              const SnackBar(content: Text('Password changed successfully')),
+            showAlertDialog(
+              context,
+              'Password Changed',
+              'Your password has been changed successfully',
             );
           } else if (state is AuthProfileUpdated) {
             _nameController.text = state.user.name;
@@ -91,9 +94,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
               SnackBar(content: Text('Profile updated successfully')),
             );
           } else if (state is AuthError) {
-            ScaffoldMessenger.of(
-              context,
-            ).showSnackBar(SnackBar(content: Text(state.message)));
+            ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(content: Text('Profile updated successfully')),
+            );
           }
         },
         child: SafeArea(

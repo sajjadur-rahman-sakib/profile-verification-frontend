@@ -64,6 +64,9 @@ class _DocumentCaptureState extends State<DocumentCapture> {
               child: BlocConsumer<AuthBloc, AuthState>(
                 listener: (context, state) {
                   if (state is AuthDocumentUploaded) {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(content: Text('Document upload successful')),
+                    );
                     Navigator.push(
                       context,
                       MaterialPageRoute(
@@ -72,9 +75,9 @@ class _DocumentCaptureState extends State<DocumentCapture> {
                       ),
                     );
                   } else if (state is AuthError) {
-                    ScaffoldMessenger.of(
-                      context,
-                    ).showSnackBar(SnackBar(content: Text(state.message)));
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(content: Text('Failed to upload document')),
+                    );
                   }
                 },
                 builder: (context, state) {

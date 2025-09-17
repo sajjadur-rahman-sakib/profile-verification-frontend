@@ -62,6 +62,9 @@ class _OtpScreenState extends State<OtpScreen> {
       body: BlocListener<AuthBloc, AuthState>(
         listener: (context, state) {
           if (state is AuthOtpVerified) {
+            ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(content: Text('OTP verified successfully')),
+            );
             Navigator.push(
               context,
               MaterialPageRoute(
@@ -69,13 +72,13 @@ class _OtpScreenState extends State<OtpScreen> {
               ),
             );
           } else if (state is AuthOtpSent) {
-            ScaffoldMessenger.of(
-              context,
-            ).showSnackBar(SnackBar(content: Text(state.message)));
+            ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(content: Text('OTP send to your given email')),
+            );
           } else if (state is AuthError) {
             ScaffoldMessenger.of(
               context,
-            ).showSnackBar(SnackBar(content: Text(state.message)));
+            ).showSnackBar(SnackBar(content: Text('Failed to verify OTP')));
           }
         },
         child: SafeArea(
@@ -198,7 +201,7 @@ class _OtpScreenState extends State<OtpScreen> {
                       } else {
                         ScaffoldMessenger.of(context).showSnackBar(
                           const SnackBar(
-                            content: Text('Please enter a 6-character OTP'),
+                            content: Text('Please enter a 6 character OTP'),
                           ),
                         );
                       }

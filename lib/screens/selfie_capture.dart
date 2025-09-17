@@ -7,6 +7,7 @@ import 'package:verify/bloc/auth_event.dart';
 import 'package:verify/bloc/auth_state.dart';
 import 'package:verify/screens/login_screen.dart';
 import 'package:verify/utils/app_colors.dart';
+import 'package:verify/widgets/alert_dialog.dart';
 
 class SelfieCapture extends StatefulWidget {
   final String email;
@@ -64,6 +65,11 @@ class _SelfieCaptureState extends State<SelfieCapture> {
               child: BlocConsumer<AuthBloc, AuthState>(
                 listener: (context, state) {
                   if (state is AuthSelfieUploaded && state.verified) {
+                    showAlertDialog(
+                      context,
+                      'Signup',
+                      'Account verification successful',
+                    );
                     Navigator.pushAndRemoveUntil(
                       context,
                       MaterialPageRoute(
@@ -72,13 +78,17 @@ class _SelfieCaptureState extends State<SelfieCapture> {
                       (route) => false,
                     );
                   } else if (state is AuthSelfieNotMatched) {
-                    ScaffoldMessenger.of(
-                      context,
-                    ).showSnackBar(SnackBar(content: Text(state.message)));
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(
+                        content: Text('Face does not match. Failed to verify'),
+                      ),
+                    );
                   } else if (state is AuthError) {
-                    ScaffoldMessenger.of(
-                      context,
-                    ).showSnackBar(SnackBar(content: Text(state.message)));
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(
+                        content: Text('Face does not match. Failed to verify'),
+                      ),
+                    );
                   }
                 },
                 builder: (context, state) {

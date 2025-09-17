@@ -9,6 +9,7 @@ import 'package:verify/screens/home_screen.dart';
 import 'package:verify/screens/login_screen.dart';
 import 'package:verify/screens/otp_screen.dart';
 import 'package:verify/utils/app_colors.dart';
+import 'package:verify/widgets/alert_dialog.dart';
 
 class SignupScreen extends StatefulWidget {
   const SignupScreen({super.key});
@@ -53,9 +54,9 @@ class _SignupScreenState extends State<SignupScreen> {
               ),
             );
           } else if (state is AuthError) {
-            ScaffoldMessenger.of(
-              context,
-            ).showSnackBar(SnackBar(content: Text(state.message)));
+            ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(content: Text('Unexpected error occurred')),
+            );
           }
         },
         builder: (context, state) {
@@ -297,14 +298,10 @@ class _SignupScreenState extends State<SignupScreen> {
                                               ),
                                             );
                                           } else {
-                                            ScaffoldMessenger.of(
+                                            showAlertDialog(
                                               context,
-                                            ).showSnackBar(
-                                              const SnackBar(
-                                                content: Text(
-                                                  'Please fill all fields and select a profile picture',
-                                                ),
-                                              ),
+                                              'Error',
+                                              'Please fill all fields',
                                             );
                                           }
                                         },
