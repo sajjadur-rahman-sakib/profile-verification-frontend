@@ -6,14 +6,14 @@ import 'package:verify/bloc/auth_state.dart';
 import 'package:verify/screens/reset_password.dart';
 import 'package:verify/utils/app_colors.dart';
 
-class ForgotPasswordScreen extends StatefulWidget {
-  const ForgotPasswordScreen({super.key});
+class ForgotPassword extends StatefulWidget {
+  const ForgotPassword({super.key});
 
   @override
-  State<ForgotPasswordScreen> createState() => _ForgotPasswordScreenState();
+  State<ForgotPassword> createState() => _ForgotPasswordState();
 }
 
-class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
+class _ForgotPasswordState extends State<ForgotPassword> {
   final _formKey = GlobalKey<FormState>();
   final _emailController = TextEditingController();
 
@@ -39,7 +39,7 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
               context,
               MaterialPageRoute(
                 builder: (context) =>
-                    ResetPasswordScreen(email: _emailController.text),
+                    ResetPassword(email: _emailController.text),
               ),
             );
           } else if (state is AuthError) {

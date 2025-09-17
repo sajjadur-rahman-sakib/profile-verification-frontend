@@ -5,16 +5,16 @@ import 'package:verify/bloc/auth_event.dart';
 import 'package:verify/bloc/auth_state.dart';
 import 'package:verify/utils/app_colors.dart';
 
-class ResetPasswordScreen extends StatefulWidget {
+class ResetPassword extends StatefulWidget {
   final String email;
 
-  const ResetPasswordScreen({super.key, required this.email});
+  const ResetPassword({super.key, required this.email});
 
   @override
-  State<ResetPasswordScreen> createState() => _ResetPasswordScreenState();
+  State<ResetPassword> createState() => _ResetPasswordState();
 }
 
-class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
+class _ResetPasswordState extends State<ResetPassword> {
   final _formKey = GlobalKey<FormState>();
   final _otpController = TextEditingController();
   final _passwordController = TextEditingController();

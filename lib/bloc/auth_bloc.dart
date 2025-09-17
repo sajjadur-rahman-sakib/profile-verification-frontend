@@ -185,5 +185,28 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
         emit(AuthError(e.toString()));
       }
     });
+
+    on<SearchProfileEvent>((event, emit) async {
+      emit(AuthLoading());
+      try {
+        final response = await apiService.searchProfile(event.email);
+
+        String profilePictureUrl = '';
+        if (response['profile_picture'] is String) {
+          profilePictureUrl = (response['profile_picture'] as String).trim();
+        }
+
+        final searchedUser = User(
+          name: response['name'] as String,
+          email: response['email'] as String,
+          address: response['address'] as String,
+          profilePictureUrl: profilePictureUrl,
+        );
+
+        emit(AuthSearchProfileSuccess(searchedUser));
+      } catch (e) {
+        emit(AuthError(e.toString()));
+      }
+    });
   }
 }

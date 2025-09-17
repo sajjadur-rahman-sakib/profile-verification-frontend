@@ -101,3 +101,9 @@ class UpdateProfileEvent extends AuthEvent {
     this.profilePicturePath,
   });
 }
+
+class SearchProfileEvent extends AuthEvent {
+  final String email;
+
+  SearchProfileEvent({required this.email});
+}

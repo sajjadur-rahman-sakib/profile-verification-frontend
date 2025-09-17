@@ -74,6 +74,12 @@ class AuthProfileUpdated extends AuthState {
   AuthProfileUpdated(this.user, this.message);
 }
 
+class AuthSearchProfileSuccess extends AuthState {
+  final User user;
+
+  AuthSearchProfileSuccess(this.user);
+}
+
 class AuthError extends AuthState {
   final String message;
 

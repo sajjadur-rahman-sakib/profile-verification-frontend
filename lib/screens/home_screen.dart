@@ -6,6 +6,7 @@ import 'package:verify/utils/app_colors.dart';
 import 'package:verify/widgets/button_card.dart';
 import 'package:verify/screens/login_screen.dart';
 import 'package:verify/screens/profile_screen.dart';
+import 'package:verify/screens/search_profile.dart';
 import 'package:verify/bloc/auth_bloc.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -17,10 +18,11 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
   final List<String> demoImages = [
-    'assets/images/image1.png',
-    'assets/images/image2.png',
-    'assets/images/image1.png',
-    'assets/images/image2.png',
+    'assets/images/image1.JPG',
+    'assets/images/image2.JPG',
+    'assets/images/image3.JPG',
+    'assets/images/image4.JPG',
+    'assets/images/image5.JPG',
   ];
 
   int _currentIndex = 0;
@@ -199,7 +201,12 @@ class _HomeScreenState extends State<HomeScreen> {
                     ButtonCard(
                       icon: Icons.search,
                       label: 'Search',
-                      onTap: () {},
+                      onTap: () => Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => const SearchProfile(),
+                        ),
+                      ),
                     ),
                     ButtonCard(
                       icon: Icons.do_not_disturb,
